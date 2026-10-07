@@ -1,0 +1,111 @@
+{
+  "materials": {
+    "aluminum_6061": {
+      "name": "Aluminum 6061",
+      "density": 2.70,
+      "hardness": 95,
+      "machinability": 8.0,
+      "description": "Standard aluminum alloy - good machinability"
+    },
+    "aluminum_7071": {
+      "name": "Aluminum 7071",
+      "density": 2.80,
+      "hardness": 150,
+      "machinability": 6.0,
+      "description": "High-strength aluminum alloy - harder to machine"
+    },
+    "sm45c": {
+      "name": "SM 45C",
+      "density": 7.85,
+      "hardness": 200,
+      "machinability": 4.0,
+      "description": "Medium carbon steel - moderate machinability"
+    },
+    "ti64": {
+      "name": "Ti 64 (Titanium Alloy)",
+      "density": 4.43,
+      "hardness": 320,
+      "machinability": 2.0,
+      "description": "Titanium alloy - difficult to machine, heat sensitive"
+    },
+    "inconel_718": {
+      "name": "Inconel 718",
+      "density": 8.19,
+      "hardness": 380,
+      "machinability": 1.5,
+      "description": "Nickel-based superalloy - very difficult to machine"
+    }
+  },
+  "stocks": {
+    "default_aluminum": {
+      "name": "Default Aluminum Stock",
+      "description": "Standard aluminum workpiece for testing",
+      "bounds": {
+        "x_min": 0,
+        "x_max": 100,
+        "y_min": 0,
+        "y_max": 100,
+        "z_min": 0,
+        "z_max": 50
+      },
+      "resolution": 1.0,
+      "material": "aluminum_6061"
+    },
+    "aluminum_7071_stock": {
+      "name": "Aluminum 7071 Stock",
+      "description": "High-strength aluminum workpiece",
+      "bounds": {
+        "x_min": 0,
+        "x_max": 100,
+        "y_min": 0,
+        "y_max": 100,
+        "z_min": 0,
+        "z_max": 50
+      },
+      "resolution": 1.0,
+      "material": "aluminum_7071"
+    },
+    "steel_sm45c": {
+      "name": "SM 45C Steel Stock",
+      "description": "Medium carbon steel workpiece",
+      "bounds": {
+        "x_min": 0,
+        "x_max": 100,
+        "y_min": 0,
+        "y_max": 100,
+        "z_min": 0,
+        "z_max": 50
+      },
+      "resolution": 1.0,
+      "material": "sm45c"
+    },
+    "titanium_stock": {
+      "name": "Titanium Stock",
+      "description": "Titanium alloy (Ti 64) workpiece",
+      "bounds": {
+        "x_min": 0,
+        "x_max": 100,
+        "y_min": 0,
+        "y_max": 100,
+        "z_min": 0,
+        "z_max": 50
+      },
+      "resolution": 1.0,
+      "material": "ti64"
+    },
+    "inconel_stock": {
+      "name": "Inconel 718 Stock",
+      "description": "Nickel-based superalloy workpiece",
+      "bounds": {
+        "x_min": 0,
+        "x_max": 100,
+        "y_min": 0,
+        "y_max": 100,
+        "z_min": 0,
+        "z_max": 50
+      },
+      "resolution": 1.0,
+      "material": "inconel_718"
+    }
+  }
+}

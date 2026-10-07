@@ -1,0 +1,148 @@
+[
+  {
+    "wo_id": "WO-A01",
+    "product_id": "PROD-S001",
+    "product_name": "정밀 샤프트 A형",
+    "order_quantity": 10,
+    "due_date": "2026-05-15T08:00:00+00:00",
+    "priority": 1,
+    "release_date": "2026-04-28T08:00:00+00:00",
+    "customer": "Test order for SHAFT-A001",
+    "operations": [
+      {
+        "op_id": "OP-A01",
+        "op_name": "소재 투입",
+        "sequence": 10,
+        "predecessors": [],
+        "required_machines": ["VMC_3AXIS_MASS", "AMR", "RACK"],
+        "setup_id": "SETUP-1",
+        "nc_code": {
+          "program_id": "NC-A01",
+          "file_path": "",
+          "cycle_time_sec": 30,
+          "cycle_time_confidence": 0.9,
+          "tool_list": [],
+          "tool_change_count": 0,
+          "compatible_machines": []
+        },
+        "cycle_time_sec": 30,
+        "process_routing_id": 1
+      },
+      {
+        "op_id": "OP-A02",
+        "op_name": "선반 가공",
+        "sequence": 20,
+        "predecessors": ["OP-A01"],
+        "required_machines": ["VMC_3AXIS_MASS"],
+        "setup_id": "SETUP-DH400-SHAFT",
+        "nc_code": {
+          "program_id": "NC-A02",
+          "file_path": "//CNC_MEM/USER/PATH1/O0002",
+          "cycle_time_sec": 90,
+          "cycle_time_confidence": 0.9,
+          "tool_list": ["T01", "T02"],
+          "tool_change_count": 2,
+          "compatible_machines": ["DH400"]
+        },
+        "cycle_time_sec": 90,
+        "process_routing_id": 2
+      },
+      {
+        "op_id": "OP-A03",
+        "op_name": "제품 반출",
+        "sequence": 30,
+        "predecessors": ["OP-A02"],
+        "required_machines": ["VMC_3AXIS_MASS", "AMR", "RACK"],
+        "setup_id": "SETUP-10",
+        "nc_code": {
+          "program_id": "NC-A03",
+          "file_path": "",
+          "cycle_time_sec": 30,
+          "cycle_time_confidence": 0.9,
+          "tool_list": [],
+          "tool_change_count": 0,
+          "compatible_machines": []
+        },
+        "cycle_time_sec": 30,
+        "process_routing_id": 3
+      }
+    ],
+    "mes_work_order_id": 1001,
+    "lot_no": "LOT-20260518-A01",
+    "scenario_id": 1,
+    "status": "READY"
+  },
+  {
+    "wo_id": "WO-B01",
+    "product_id": "PROD-P001",
+    "product_name": "밀링 플레이트 B형",
+    "order_quantity": 8,
+    "due_date": "2026-05-20T08:00:00+00:00",
+    "priority": 2,
+    "release_date": "2026-04-28T08:00:00+00:00",
+    "customer": "Test order for PLATE-B001",
+    "operations": [
+      {
+        "op_id": "OP-B01",
+        "op_name": "소재 투입",
+        "sequence": 10,
+        "predecessors": [],
+        "required_machines": ["VMC_3AXIS_PALLET", "AMR", "RACK"],
+        "setup_id": "SETUP-1",
+        "nc_code": {
+          "program_id": "NC-B01",
+          "file_path": "",
+          "cycle_time_sec": 30,
+          "cycle_time_confidence": 0.9,
+          "tool_list": [],
+          "tool_change_count": 0,
+          "compatible_machines": []
+        },
+        "cycle_time_sec": 30,
+        "process_routing_id": 4
+      },
+      {
+        "op_id": "OP-B02",
+        "op_name": "밀링 가공",
+        "sequence": 20,
+        "predecessors": ["OP-B01"],
+        "required_machines": ["VMC_3AXIS_PALLET"],
+        "setup_id": "SETUP-NX5500-PLATE",
+        "nc_code": {
+          "program_id": "NC-B02",
+          "file_path": "//CNC_MEM/USER/PATH1/O0005",
+          "cycle_time_sec": 120,
+          "cycle_time_confidence": 0.9,
+          "tool_list": ["T03", "T04", "T05"],
+          "tool_change_count": 3,
+          "compatible_machines": ["NX5500"]
+        },
+        "cycle_time_sec": 120,
+        "process_routing_id": 5
+      },
+      {
+        "op_id": "OP-B03",
+        "op_name": "제품 반출",
+        "sequence": 30,
+        "predecessors": ["OP-B02"],
+        "required_machines": ["VMC_3AXIS_PALLET", "AMR", "RACK"],
+        "setup_id": "SETUP-10",
+        "nc_code": {
+          "program_id": "NC-B03",
+          "file_path": "",
+          "cycle_time_sec": 30,
+          "cycle_time_confidence": 0.9,
+          "tool_list": [],
+          "tool_change_count": 0,
+          "compatible_machines": []
+        },
+        "cycle_time_sec": 30,
+        "process_routing_id": 6
+      }
+    ],
+    "mes_work_order_id": 1002,
+    "lot_no": "LOT-20260518-B01",
+    "scenario_id": 2,
+    "status": "READY"
+  }
+]

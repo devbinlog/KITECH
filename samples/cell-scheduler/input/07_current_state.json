@@ -1,0 +1,132 @@
+{
+  "current_state": {
+    "timestamp": "2025-01-17T08:00:00",
+    "state_type": "initial",
+
+    "in_progress": [],
+
+    "completed_today": [],
+
+    "feeder_states": [
+      {
+        "feeder_id": "FEEDER-MASS",
+        "current_count": 10,
+        "current_part_id": null,
+        "status": "ready"
+      },
+      {
+        "feeder_id": "FEEDER-PALLET-A",
+        "current_count": 8,
+        "current_part_id": null,
+        "status": "ready"
+      },
+      {
+        "feeder_id": "FEEDER-PALLET-B",
+        "current_count": 8,
+        "current_part_id": null,
+        "status": "ready"
+      },
+      {
+        "feeder_id": "OUTFEED-MASS",
+        "current_count": 0,
+        "status": "ready"
+      },
+      {
+        "feeder_id": "OUTFEED-PALLET",
+        "current_count": 0,
+        "status": "ready"
+      }
+    ],
+
+    "buffer_states": [
+      {
+        "machine_id": "MCH-001",
+        "material_count": 0,
+        "finished_count": 0
+      },
+      {
+        "machine_id": "MCH-002",
+        "material_count": 0,
+        "finished_count": 0
+      }
+    ],
+
+    "wip_buffer_state": {
+      "buffer_id": "BUFFER-WIP",
+      "current_count": 0,
+      "items": []
+    },
+
+    "amr_states": [
+      {
+        "amr_id": "AMR-001",
+        "status": "available",
+        "current_location": "FEEDER-MASS",
+        "battery_percent": 95,
+        "current_task": null
+      },
+      {
+        "amr_id": "AMR-002",
+        "status": "available",
+        "current_location": "FEEDER-PALLET-B",
+        "battery_percent": 88,
+        "current_task": null
+      }
+    ],
+
+    "machine_states": [
+      {
+        "machine_id": "MCH-001",
+        "status": "available",
+        "current_job_id": null,
+        "current_op_id": null
+      },
+      {
+        "machine_id": "MCH-002",
+        "status": "available",
+        "current_job_id": null,
+        "current_op_id": null
+      },
+      {
+        "machine_id": "MCH-003",
+        "status": "available",
+        "current_job_id": null,
+        "current_op_id": null
+      },
+      {
+        "machine_id": "MCH-004",
+        "status": "running",
+        "current_job_id": "JOB-000",
+        "current_op_id": "OP20",
+        "progress_percent": 75,
+        "expected_end": "2025-01-17T09:30:00"
+      },
+      {
+        "machine_id": "MCH-005",
+        "status": "available",
+        "current_job_id": null,
+        "current_op_id": null
+      },
+      {
+        "machine_id": "MCH-006",
+        "status": "maintenance",
+        "maintenance_type": "scheduled",
+        "expected_available": "2025-01-17T14:00:00"
+      },
+      {
+        "machine_id": "MCH-007",
+        "status": "available",
+        "current_job_id": null,
+        "current_op_id": null
+      },
+      {
+        "machine_id": "MCH-008",
+        "status": "available",
+        "current_job_id": null,
+        "current_op_id": null
+      }
+    ],
+
+    "event": null
+  }
+}

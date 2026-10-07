@@ -1,0 +1,53 @@
+{
+  "name": "cell-mes-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest",
+    "test:unit": "vitest --project unit",
+    "test:e2e": "vitest --project e2e",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --project unit --coverage",
+    "generate:api": "openapi --input http://localhost:8000/api/v1/openapi.json --output src/generated/api --client axios",
+    "generate:api:file": "openapi --input openapi.json --output src/generated/api --client axios"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.28.0",
+    "axios": "^1.6.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.3.0",
+    "lucide-react": "^0.363.0",
+    "next": "14.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-json-view-lite": "^1.2.0",
+    "reactflow": "^11.11.0",
+    "recharts": "^2.12.0",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^5.1.4",
+    "@vitest/browser": "^4.0.18",
+    "@vitest/browser-playwright": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.0",
+    "happy-dom": "^20.6.1",
+    "openapi-typescript-codegen": "^0.30.0",
+    "playwright": "^1.58.2",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.4.0",
+    "vitest": "^4.0.18"
+  }
+}

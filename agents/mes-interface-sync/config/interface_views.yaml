@@ -1,0 +1,274 @@
+version: 1
+
+schemas:
+  source: mes_src
+  interface: mes_if
+
+defaults:
+  include_meta_columns: true
+  create_auto_views_for_unmapped_tables: true
+  on_missing_required_column: fail
+  on_missing_optional_column: null
+
+exclude_tables:
+  - users
+  - middleware_config
+  - alembic_version
+
+sensitive_columns:
+  equipments:
+    - connection_config
+  measurement_devices:
+    - connection_config
+  process_routing_files:
+    - file_path
+  dt_file_refs:
+    - path
+    - raw_metadata
+  dt_project_refs:
+    - raw_metadata
+
+views:
+  - name: if_work_orders
+    source_table: work_orders
+    description: APS 작업지시 입력 View
+    columns:
+      - name: id
+        source: id
+        required: true
+      - name: lot_no
+        source: lot_no
+        required: true
+      - name: product_id
+        source: product_id
+        required: true
+      - name: scenario_id
+        source: scenario_id
+        required: false
+      - name: qty
+        source_candidates:
+          - qty
+          - target_qty
+        required: true
+      - name: target_qty
+        source_candidates:
+          - target_qty
+          - qty
+        required: false
+      - name: priority
+        source: priority
+        required: false
+        default: 0
+      - name: status
+        source: status
+        required: true
+      - name: due_date
+        source_candidates:
+          - due_date
+          - delivery_date
+          - deadline_at
+        required: false
+      - name: start_time
+        source_candidates:
+          - start_time
+          - planned_start_time
+        required: false
+      - name: end_time
+        source_candidates:
+          - end_time
+          - planned_end_time
+        required: false
+      - name: completed_qty
+        source: completed_qty
+        required: false
+        default: 0
+      - name: current_process
+        source: current_process
+        required: false
+      - name: remarks
+        source: remarks
+        required: false
+
+  - name: if_process_routings
+    source_table: process_routings
+    description: 제품별 공정 순서 View
+    columns:
+      - name: id
+        source: id
+        required: true
+      - name: product_id
+        source: product_id
+        required: true
+      - name: std_process_id
+        source: std_process_id
+        required: true
+      - name: sequence
+        source_candidates:
+          - sequence
+          - seq
+          - operation_sequence
+        required: true
+      - name: revision
+        source: revision
+        required: false
+      - name: setup_id
+        source: setup_id
+        required: false
+      - name: required_machines
+        source_candidates:
+          - required_machines
+          - candidate_machines
+        required: false
+      - name: cycle_time_sec
+        source_candidates:
+          - cycle_time_sec
+          - processing_time_sec
+          - duration_sec
+        required: false
+      - name: cycle_time_breakdown
+        source: cycle_time_breakdown
+        required: false
+      - name: dt_workplan_id
+        source: dt_workplan_id
+        required: false
+      - name: remarks
+        source: remarks
+        required: false
+
+  - name: if_std_processes
+    source_table: std_processes
+    description: 표준 공정 기준정보 View
+    columns:
+      - name: id
+        source: id
+        required: true
+      - name: code
+        source: code
+        required: true
+      - name: name
+        source: name
+        required: true
+      - name: equipment_type
+        source: equipment_type
+        required: false
+      - name: cycle_time_sec
+        source: cycle_time_sec
+        required: false
+      - name: setup_time_sec
+        source: setup_time_sec
+        required: false
+      - name: required_machines
+        source: required_machines
+        required: false
+      - name: category_id
+        source: category_id
+        required: false
+
+  - name: if_equipments
+    source_table: equipments
+    description: 설비 기준정보 View
+    exclude_columns:
+      - connection_config
+    columns:
+      - name: id
+        source: id
+        required: true
+      - name: eq_code
+        source_candidates:
+          - eq_code
+          - code
+        required: false
+      - name: eq_name
+        source_candidates:
+          - eq_name
+          - name
+        required: true
+      - name: model_name
+        source: model_name
+        required: false
+      - name: equipment_type
+        source: equipment_type
+        required: false
+      - name: current_status
+        source_candidates:
+          - current_status
+          - status
+        required: false
+      - name: cell_id
+        source: cell_id
+        required: false
+      - name: spec_data
+        source: spec_data
+        required: false
+      - name: last_data
+        source: last_data
+        required: false
+      - name: updated_at
+        source: updated_at
+        required: false
+
+  - name: if_prod_results
+    source_table: prod_results
+    description: 생산 실적 및 설비 점유 이력 View
+    columns:
+      - name: id
+        source: id
+        required: true
+      - name: work_order_id
+        source: work_order_id
+        required: true
+      - name: process_routing_id
+        source: process_routing_id
+        required: false
+      - name: equipment_id
+        source: equipment_id
+        required: false
+      - name: target_equipment_id
+        source: target_equipment_id
+        required: false
+      - name: unit_id
+        source: unit_id
+        required: false
+      - name: ok_qty
+        source: ok_qty
+        required: false
+        default: 0
+      - name: ng_qty
+        source: ng_qty
+        required: false
+        default: 0
+      - name: start_time
+        source: start_time
+        required: false
+      - name: end_time
+        source: end_time
+        required: false
+
+  - name: if_downtimes
+    source_table: downtimes
+    description: 설비 비가동 이력 View
+    columns:
+      - name: id
+        source: id
+        required: true
+      - name: equipment_id
+        source: equipment_id
+        required: true
+      - name: reason_id
+        source: reason_id
+        required: false
+      - name: work_order_id
+        source: work_order_id
+        required: false
+      - name: start_time
+        source: start_time
+        required: true
+      - name: end_time
+        source: end_time
+        required: false
+      - name: duration_minutes
+        source: duration_minutes
+        required: false
+      - name: remarks
+        source: remarks
+        required: false

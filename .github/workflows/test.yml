@@ -1,0 +1,177 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ──────────────────────────────────────────
+  # Python service tests — matrix per service
+  # ──────────────────────────────────────────
+  python-tests:
+    name: pytest / ${{ matrix.service }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - cell-mes
+          - nl-router
+          - cell-scheduler
+          - agent-orchestrator
+          - gcode-parser
+          - cam-runner
+          - monitoring-data-replayer
+          - cell-schedule-visualizer
+          - torus-mock
+          - digital-thread-project-manager
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Cache uv virtualenv
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            .venv
+          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock', 'pyproject.toml') }}
+          restore-keys: |
+            uv-${{ runner.os }}-
+
+      - name: Sync workspace
+        run: uv sync --frozen --all-packages
+
+      - name: Run pytest — ${{ matrix.service }}
+        run: |
+          cd agents/${{ matrix.service }}
+          uv run pytest tests/ -q --tb=short
+        env:
+          INTERNAL_SERVICE_KEY: test-internal-key
+
+  # ──────────────────────────────────────────
+  # step-pmi-reader — OCC deps skipped in CI
+  # (conftest marks OCC-dependent tests with
+  #  pytest.importorskip / skipif so bare pytest
+  #  still collects and passes non-OCC tests)
+  # ──────────────────────────────────────────
+  step-pmi-reader-tests:
+    name: pytest / step-pmi-reader (no-OCC)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Cache uv virtualenv
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            .venv
+          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock', 'pyproject.toml') }}
+          restore-keys: |
+            uv-${{ runner.os }}-
+
+      - name: Sync workspace
+        run: uv sync --frozen --all-packages
+
+      - name: Run pytest — step-pmi-reader (OCC tests auto-skipped)
+        run: |
+          cd agents/step-pmi-reader
+          uv run pytest tests/ -q --tb=short -m "not occ"
+        env:
+          INTERNAL_SERVICE_KEY: test-internal-key
+          # OCC (pythonOCC-core) requires conda-forge and is not
+          # installable via pip/uv on bare Ubuntu.  Tests that need OCC
+          # must be marked @pytest.mark.occ so the -m "not occ" filter
+          # skips them here.  A separate conda-based job can be added
+          # when OCC coverage is required in CI.
+
+  # ──────────────────────────────────────────
+  # shared/common tests
+  # ──────────────────────────────────────────
+  shared-common-tests:
+    name: pytest / shared/common
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Cache uv virtualenv
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            .venv
+          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock', 'pyproject.toml') }}
+          restore-keys: |
+            uv-${{ runner.os }}-
+
+      - name: Sync workspace
+        run: uv sync --frozen --all-packages
+
+      - name: Test shared/common
+        run: cd shared/common && uv run pytest tests/ -q --tb=short
+        env:
+          INTERNAL_SERVICE_KEY: test-internal-key
+
+  # ──────────────────────────────────────────
+  # Frontend — TypeScript check + Vitest
+  # ──────────────────────────────────────────
+  frontend-tests:
+    name: frontend / tsc + vitest
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: agents/cell-mes/frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: agents/cell-mes/frontend/node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('agents/cell-mes/frontend/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Vitest
+        run: npx vitest run

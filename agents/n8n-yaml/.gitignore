@@ -1,0 +1,14 @@
+# Node.js
+custom-nodes/n8n-nodes-scenario/node_modules/
+custom-nodes/n8n-nodes-scenario/dist/
+
+# Python
+**/__pycache__/
+*.pyc
+
+# 테스트 결과물
+tests/output/
+
+# 생성된 결과물 (선택적으로 제외)
+# data/workflow.json
+# data/recovered.yaml

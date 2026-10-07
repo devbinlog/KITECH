@@ -1,0 +1,71 @@
+{
+  "constraints": {
+    "hard": {
+      "precedence": {
+        "enabled": true,
+        "description": "공정 순서 준수 (OP10 → OP20 → OP30)"
+      },
+      "machine_compatibility": {
+        "enabled": true,
+        "description": "공정-장비 호환성 준수"
+      },
+      "no_overlap": {
+        "enabled": true,
+        "description": "장비당 동시 작업 불가"
+      },
+      "working_hours": {
+        "enabled": true,
+        "description": "근무시간 내 작업"
+      },
+      "release_date": {
+        "enabled": true,
+        "description": "착수가능일 이후 작업 시작"
+      },
+      "amr_accessibility": {
+        "enabled": true,
+        "description": "AMR 접근 가능 장비 제약"
+      }
+    },
+
+    "soft": {
+      "due_date": {
+        "weight": 100,
+        "penalty_per_hour": 10,
+        "description": "납기 지연 패널티"
+      },
+      "setup_change": {
+        "weight": 20,
+        "description": "셋업 변경 최소화"
+      },
+      "load_balance": {
+        "weight": 5,
+        "description": "장비간 부하 균형"
+      },
+      "transport_distance": {
+        "weight": 2,
+        "description": "AMR 이동거리 최소화"
+      }
+    },
+
+    "objective": "minimize_makespan",
+    
+    "objective_options": [
+      {
+        "id": "minimize_makespan",
+        "description": "총 완료시간 최소화"
+      },
+      {
+        "id": "minimize_tardiness",
+        "description": "납기 지연 최소화"
+      },
+      {
+        "id": "maximize_utilization",
+        "description": "장비 가동률 최대화"
+      },
+      {
+        "id": "minimize_setup",
+        "description": "셋업 변경 횟수 최소화"
+      }
+    ]
+  }
+}

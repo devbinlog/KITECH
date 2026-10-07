@@ -1,0 +1,83 @@
+{
+  "amrs": [
+    {
+      "amr_id": "AMR-001",
+      "model": "MiR250",
+      "status": "available",
+      "current_location": "FEEDER-MASS",
+      "speed_m_per_sec": 1.0,
+      
+      "accessible_machines": [
+        "MCH-001", 
+        "MCH-002", 
+        "MCH-003", 
+        "MCH-004"
+      ],
+      
+      "accessible_feeders": [
+        "FEEDER-MASS", 
+        "FEEDER-PALLET-A", 
+        "OUTFEED-MASS", 
+        "OUTFEED-PALLET"
+      ],
+      
+      "capacity_by_type": {
+        "VMC_3AXIS_MASS": 3,
+        "VMC_3AXIS_PALLET": 1,
+        "VMC_4AXIS_PALLET": 1,
+        "HARD_TURNING": 1
+      }
+    },
+    {
+      "amr_id": "AMR-002",
+      "model": "MiR250",
+      "status": "available",
+      "current_location": "FEEDER-PALLET-B",
+      "speed_m_per_sec": 1.0,
+      
+      "accessible_machines": [
+        "MCH-005", 
+        "MCH-006", 
+        "MCH-007", 
+        "MCH-008"
+      ],
+      
+      "accessible_feeders": [
+        "FEEDER-MASS", 
+        "FEEDER-PALLET-B", 
+        "OUTFEED-MASS", 
+        "OUTFEED-PALLET"
+      ],
+      
+      "capacity_by_type": {
+        "VMC_3AXIS_MASS": 3,
+        "VMC_3AXIS_PALLET": 1,
+        "VMC_4AXIS_PALLET": 1,
+        "HARD_TURNING": 1
+      }
+    }
+  ],
+
+  "amr_config_presets": {
+    "config_zone_split": {
+      "config_id": "CONFIG-001",
+      "description": "영역 분리 (기본)",
+      "AMR-001": ["MCH-001", "MCH-002", "MCH-003", "MCH-004"],
+      "AMR-002": ["MCH-005", "MCH-006", "MCH-007", "MCH-008"]
+    },
+    
+    "config_full_access": {
+      "config_id": "CONFIG-002",
+      "description": "전체 접근 (유연)",
+      "AMR-001": ["MCH-001", "MCH-002", "MCH-003", "MCH-004", "MCH-005", "MCH-006", "MCH-007", "MCH-008"],
+      "AMR-002": ["MCH-001", "MCH-002", "MCH-003", "MCH-004", "MCH-005", "MCH-006", "MCH-007", "MCH-008"]
+    },
+    
+    "config_mass_focus": {
+      "config_id": "CONFIG-003",
+      "description": "양산 집중 (AMR-001: 양산전용, AMR-002: 나머지)",
+      "AMR-001": ["MCH-001", "MCH-002"],
+      "AMR-002": ["MCH-003", "MCH-004", "MCH-005", "MCH-006", "MCH-007", "MCH-008"]
+    }
+  }
+}

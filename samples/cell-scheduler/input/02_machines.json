@@ -1,0 +1,93 @@
+{
+  "machines": [
+    {
+      "machine_id": "MCH-001",
+      "machine_name": "3축 밀링 양산장비",
+      "machine_type": "VMC_3AXIS_MASS",
+      "manufacturer": "DOOSAN",
+      "model": "DNM-4500",
+      "description": "고속 양산 장비, 자동 공구 교체, 연속 생산 최적화",
+      "axis": "3축 (XYZ)",
+      "status": "available",
+      "available_from": "2025-01-17T08:00:00",
+      "current_setup_id": "TS-MASS-001",
+      "setup_change_time_min": 15,
+      "buffer": {
+        "total_slots": 6,
+        "material_slots": 3,
+        "finished_slots": 3,
+        "current_material_count": 0,
+        "current_finished_count": 0
+      },
+      "calendar": {
+        "shift_start": "08:00",
+        "shift_end": "20:00",
+        "breaks": [
+          {"start": "12:00", "end": "13:00"}
+        ]
+      }
+    },
+    {
+      "machine_id": "MCH-002",
+      "machine_name": "3축 밀링 팔레트 장비",
+      "machine_type": "VMC_3AXIS_PALLET",
+      "manufacturer": "DMG MORI",
+      "model": "CMX-600V",
+      "description": "팔레트 자동 교체, 다중 파트 동시 가공 가능",
+      "axis": "3축 (XYZ)",
+      "status": "available",
+      "available_from": "2025-01-17T08:00:00",
+      "current_setup_id": "TS-PLT-001",
+      "setup_change_time_min": 5,
+      "pallet_count": 2,
+      "pallet_change_time_sec": 15,
+      "calendar": {
+        "shift_start": "08:00",
+        "shift_end": "20:00",
+        "breaks": []
+      }
+    },
+    {
+      "machine_id": "MCH-003",
+      "machine_name": "4축 밀링 팔레트 장비",
+      "machine_type": "VMC_4AXIS_PALLET",
+      "manufacturer": "DMG MORI",
+      "model": "CMX-70U",
+      "description": "4축 팔레트 방식, 회전축 가공 가능, 복잡한 형상 처리",
+      "axis": "4축 (XYZ+A)",
+      "status": "available",
+      "available_from": "2025-01-17T08:00:00",
+      "current_setup_id": "TS-4AX-001",
+      "setup_change_time_min": 10,
+      "pallet_count": 2,
+      "pallet_change_time_sec": 20,
+      "calendar": {
+        "shift_start": "08:00",
+        "shift_end": "20:00",
+        "breaks": [
+          {"start": "12:00", "end": "13:00"}
+        ]
+      }
+    },
+    {
+      "machine_id": "MCH-004",
+      "machine_name": "하드 터닝 장비",
+      "machine_type": "HARD_TURNING",
+      "manufacturer": "MAZAK",
+      "model": "QTN-200MY",
+      "description": "경화강 선삭 전문 장비, 고정밀 드로잉 및 조각 가공",
+      "axis": "선삭 (XZ)",
+      "status": "available",
+      "available_from": "2025-01-17T08:00:00",
+      "current_setup_id": "TS-HT-001",
+      "setup_change_time_min": 20,
+      "calendar": {
+        "shift_start": "08:00",
+        "shift_end": "20:00",
+        "breaks": [
+          {"start": "12:00", "end": "13:00"}
+        ]
+      }
+    }
+  ]
+}

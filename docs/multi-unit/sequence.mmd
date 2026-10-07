@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant Web as MES Frontend
+    participant DB as MES DB
+    participant Daemon as MES Queue Daemon
+    participant API as MES Backend API
+    participant MW as Middleware (am-middleware)
+    
+    Note over Web, DB: [1] 작업지시 시작 (작업 대기 스레드 생성)
+    Web->>API: POST /orders/1/start (target_qty: 100)
+    API->>DB: WorkOrder 상태 = RUNNING
+    
+    loop MES 백그라운드 주기 (2 seconds)
+        Daemon->>DB: 현재 큐 상태 체크 (READY 유닛 갯수 산출)
+        alt READY 상태 유닛이 0개인 경우
+            Daemon->>DB: 신규 Unit 레코드 생성 (status=READY)
+            Note over Daemon, DB: 현재 상태의 시나리오(YAML) 정보를 유닛 레코드에 스냅샷 형태로 기록
+        end
+    end
+    
+    loop 미들웨어 생산 제어 루프
+        MW->>API: 글로벌 대기 큐 가용성 확인 (GET /api/v1/production/orders/ready-units)
+        API-->>MW: 활성화된 모든 작업지시(Priority 정렬) 별 READY 유닛 리스트 반환
+        Note over MW: 내부 리소스 계산 및 사용 가능 설비 기준 리스트 순차 탐색 (Priority Blocking 방지)
+        MW->>API: 작업 소유권 획득 요청 (POST /api/v1/production/orders/1/units/1/claim)
+        API->>DB: Unit 상태 변경 (READY -> RUNNING)
+        MW->>MW: 할당된 YAML 버전 기준으로 자율 제어 생산 개시
+        Note over Daemon: 큐 점유 해제로 인해 다음 주기에 데몬이 신규 Unit 자동 생성
+    end
+    
+    Note over Web, MW: [2] 생산 중 시나리오 제한적 동적 교체 (Logical Pause Flow)
+    Web->>API: 일시정지 요청
+    API->>DB: WorkOrder 상태 = PAUSE 
+    Note over API, MW: [중요] 미들웨어에 중단(Stop) 명령 하달 지양!<br/>상태가 PAUSE로 바뀌어 글로벌 큐(GET /units/ready)에서 해당 로트가 은닉됨.<br/>이미 RUNNING 중인 유닛은 간섭 없이 끝까지 수행 완료.
+    
+    Web->>API: 시나리오 변경 요청 (B 버전으로 변경)
+    API->>DB: 현재 대기 상태(READY) Unit들의 YAML 참조 데이터만 B 버전으로 덮어쓰기
+    
+    Web->>API: 재시작 요청
+    API->>DB: WorkOrder 상태 = RUNNING
+    Note over MW, DB: 다음 글로벌 큐 Polling 시 다시 리스트에 노출되며, 미들웨어가 Claim하면 변경된 B 버전 배정.

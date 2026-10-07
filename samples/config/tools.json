@@ -1,0 +1,44 @@
+{
+  "tools": [
+    {
+      "id": 1,
+      "name": "3mm Endmill",
+      "diameter": 3.0,
+      "type": "endmill",
+      "material": "carbide",
+      "flutes": 2,
+      "max_spindle_speed": 12000,
+      "description": "Standard 3mm end mill for aluminum"
+    },
+    {
+      "id": 2,
+      "name": "6mm Endmill",
+      "diameter": 6.0,
+      "type": "endmill",
+      "material": "carbide",
+      "flutes": 2,
+      "max_spindle_speed": 8000,
+      "description": "Standard 6mm end mill"
+    },
+    {
+      "id": 3,
+      "name": "4mm Ball Nose",
+      "diameter": 4.0,
+      "type": "ballnose",
+      "material": "carbide",
+      "flutes": 2,
+      "max_spindle_speed": 10000,
+      "description": "4mm ball nose for contouring"
+    },
+    {
+      "id": 4,
+      "name": "10mm Face Mill",
+      "diameter": 10.0,
+      "type": "facemill",
+      "material": "carbide",
+      "flutes": 4,
+      "max_spindle_speed": 4000,
+      "description": "10mm face mill for surfacing"
+    }
+  ]
+}

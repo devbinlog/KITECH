@@ -1,0 +1,25 @@
+{
+  "name": "monitoring-analysis",
+  "description": "Analyze CNC monitoring data (TDMS/LOG files) and extract statistics",
+  "version": "1.0",
+  "stages": [
+    {
+      "name": "monitoring_file_info",
+      "agent": "monitoring-data-replayer",
+      "description": "Get metadata and channel information from monitoring file",
+      "enabled": true,
+      "config": {
+        "data_path": null
+      }
+    },
+    {
+      "name": "monitoring_statistics",
+      "agent": "monitoring-data-replayer",
+      "description": "Calculate statistics for spindle RPM, feedrate, vibration",
+      "enabled": true,
+      "config": {
+        "data_path": null
+      }
+    }
+  ]
+}

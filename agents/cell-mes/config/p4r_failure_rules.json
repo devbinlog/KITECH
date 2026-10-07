@@ -1,0 +1,88 @@
+{
+  "version": "1.0",
+  "default": {
+    "failureType": "NONE",
+    "remainingRepairTime": 0
+  },
+  "rules": [
+    {
+      "id": "disconnected",
+      "priority": 10,
+      "when": {
+        "isConnected": false
+      },
+      "result": {
+        "failureType": "DISCONNECTED",
+        "remainingRepairTime": 300
+      }
+    },
+    {
+      "id": "cnc_alarm",
+      "priority": 30,
+      "resourceTypes": ["CNC"],
+      "whenAny": [
+        {
+          "statusIn": ["ALARM", "ERROR", "FAULT"]
+        },
+        {
+          "hasField": ["alarm", "error"]
+        }
+      ],
+      "result": {
+        "failureType": "CNC_ALARM",
+        "remainingRepairTime": 600
+      }
+    },
+    {
+      "id": "feeder_robot_error",
+      "priority": 30,
+      "resourceTypes": ["FEEDER"],
+      "whenAny": [
+        {
+          "statusIn": ["ALARM", "ERROR", "FAULT"]
+        },
+        {
+          "hasField": ["alarm", "error"]
+        }
+      ],
+      "result": {
+        "failureType": "ROBOT_ERROR",
+        "remainingRepairTime": 600
+      }
+    },
+    {
+      "id": "qcm_error",
+      "priority": 30,
+      "resourceTypes": ["QCM", "QUALITY_CONTROL_MACHINE", "QUALITY_CONTROLL_MACHINE"],
+      "whenAny": [
+        {
+          "statusIn": ["ALARM", "ERROR", "FAULT"]
+        },
+        {
+          "hasField": ["alarm", "error"]
+        }
+      ],
+      "result": {
+        "failureType": "QCM_ERROR",
+        "remainingRepairTime": 600
+      }
+    },
+    {
+      "id": "machine_error",
+      "priority": 50,
+      "resourceTypes": ["MACHINE"],
+      "whenAny": [
+        {
+          "statusIn": ["ALARM", "ERROR", "FAULT"]
+        },
+        {
+          "hasField": ["alarm", "error"]
+        }
+      ],
+      "result": {
+        "failureType": "UNKNOWN_ERROR",
+        "remainingRepairTime": 300
+      }
+    }
+  ]
+}

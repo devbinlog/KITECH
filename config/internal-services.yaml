@@ -1,0 +1,130 @@
+# Service Registry — agents-workspace internal services
+#
+# 본 파일은 docker network 안에서 서로 호출하는 서비스 목록.
+# 미래 agent-orchestrator가 본 파일을 읽어 dynamic tool registration.
+#
+# 채워질 항목:
+#  - name:        unique service id (kebab-case)
+#  - container:   docker container/service name (compose service name)
+#  - base_url:    내부 docker network URL (호스트는 다를 수 있음)
+#  - external_port: 호스트에서 접근 가능한 포트
+#  - health:      health check endpoint (no auth)
+#  - capabilities: 메타데이터 endpoint (no auth)
+#  - description: 한 줄 설명
+#
+# 인증: 모든 도메인 endpoint는 X-Internal-Key 헤더로 인증.
+#       단일 INTERNAL_SERVICE_KEY를 모든 서비스가 공유.
+
+version: "1.0"
+schema: "https://agents-workspace/internal-services.schema.json"
+
+services:
+  # === 기존 서비스 ===
+  - name: cell-mes
+    container: cell-mes
+    base_url: http://cell-mes:8000
+    external_port: 8000
+    health: /health
+    capabilities: /capabilities   # 추가됨 (audit C4 — sub-agent 참조)
+    description: "MES backend (production / quality / master / scenarios)"
+
+  - name: nl-router
+    container: nl-router
+    base_url: http://nl-router:8001
+    external_port: 8001
+    health: /health
+    capabilities: /capabilities   # 등록됨 (commit 0f534a4)
+    description: "Natural language routing gateway (stateless intent classification)"
+
+  - name: cell-scheduler
+    container: cell-scheduler
+    base_url: http://cell-scheduler:8002
+    external_port: 8002
+    health: /health   # 보정 (audit M9 추가 처리 — 실제 endpoint는 /health)
+    capabilities: /capabilities   # 추가됨 (audit C4 — sub-agent 참조)
+    description: "OR-Tools based production scheduler"
+
+  - name: dtp
+    container: dtp
+    base_url: http://dtp:8005
+    external_port: 8005
+    health: /health   # 추가됨 (audit M9 — sub-agent 참조)
+    capabilities: /capabilities   # 추가됨 (audit C4 — sub-agent 참조)
+    description: "Digital Thread Project Manager (assets / operations / OCC)"
+
+  - name: n8n
+    container: n8n-scenario
+    base_url: http://n8n:5678
+    external_port: 5678
+    health: /healthz
+    capabilities: null
+    description: "n8n workflow execution engine"
+    visibility: internal-only   # 127.0.0.1 binding (audit C4)
+
+  - name: redis
+    container: redis
+    base_url: redis://redis:6379
+    external_port: 6379
+    health: null
+    capabilities: null
+    description: "Event bus and cache"
+
+  # === 신규 라이브러리 서비스 (library-agents-containerization) ===
+  - name: gcode-parser
+    container: gcode-parser
+    base_url: http://gcode-parser:8010
+    external_port: 8010
+    health: /health
+    capabilities: /capabilities
+    description: "G-code parser — block-level analysis"
+
+  - name: cam-runner
+    container: cam-runner
+    base_url: http://cam-runner:8011
+    external_port: 8011
+    health: /health
+    capabilities: /capabilities
+    description: "CAM toolpath analysis — cycle time + Ap/Ae"
+
+  - name: step-pmi-reader
+    container: step-pmi-reader
+    base_url: http://step-pmi-reader:8012
+    external_port: 8012
+    health: /health
+    capabilities: /capabilities
+    description: "STEP file PMI extraction (OCC-based)"
+
+  - name: monitoring-data-replayer
+    container: monitoring-data-replayer
+    base_url: http://monitoring-data-replayer:8013
+    external_port: 8013
+    health: /health
+    capabilities: /capabilities
+    description: "Monitoring/equipment polling data replay"
+
+  - name: cell-schedule-visualizer
+    container: cell-schedule-visualizer
+    base_url: http://cell-schedule-visualizer:8014
+    external_port: 8014
+    health: /health
+    capabilities: /capabilities
+    description: "Gantt chart rendering for scheduler outputs"
+
+  - name: torus-mock
+    container: torus-mock
+    base_url: http://torus-mock:8015
+    external_port: 8015
+    health: /health
+    capabilities: /capabilities
+    description: "TORUS external system mock"
+
+  # === Agent Orchestrator (PDCA: agent-orchestrator) ===
+  # 본 서비스는 자기 자신을 tool로 등록하지 않음 (재귀 방지). 메타데이터만.
+  - name: agent-orchestrator
+    container: agent-orchestrator
+    base_url: http://agent-orchestrator:8020
+    external_port: 8020
+    health: /health
+    capabilities: /capabilities
+    description: "LangGraph-based agent orchestrator with multi-step reasoning + dynamic tool loading"
+    visibility: orchestrator-self   # 다른 서비스가 호출하지 않음. tool loader는 본인 제외.

@@ -1,0 +1,29 @@
+{
+  "scheduling_request": {
+    "request_id": "SCH-REQ-2025-0117-001",
+    "request_type": "initial",
+    "request_time": "2025-01-17T08:00:00",
+    
+    "scheduling_horizon": {
+      "start": "2025-01-17T08:00:00",
+      "end": "2025-01-22T20:00:00"
+    },
+
+    "input_files": {
+      "work_orders": "01_work_orders.json",
+      "machines": "02_machines.json",
+      "machine_type_params": "03_machine_type_params.json",
+      "amrs": "04_amrs.json",
+      "cell_layout": "05_cell_layout.json",
+      "constraints": "06_constraints.json",
+      "current_state": "07_current_state.json"
+    },
+
+    "options": {
+      "solver_time_limit_sec": 60,
+      "allow_overnight": true,
+      "consider_breaks": true,
+      "amr_config": "config_zone_split"
+    }
+  }
+}

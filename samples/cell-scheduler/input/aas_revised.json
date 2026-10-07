@@ -1,0 +1,1493 @@
+{
+  "assetAdministrationShells": [
+    {
+      "idShort": "DH400",
+      "modelType": "AssetAdministrationShell",
+      "id": "https://example.com/ids/aas/5154_7101_1062_2938",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/9454_7101_1062_2574"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/2094_7101_1062_5375"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/1060_0211_1062_4090"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/0292_1110_2062_6380"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/5154_7101_1062_sched"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "DOOSAN_MOMA",
+      "modelType": "AssetAdministrationShell",
+      "id": "https://example.com/ids/aas/7483_2191_1062_9621",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/6093_2191_1062_1274"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/9214_7072_1062_7607"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/2201_3162_1062_7426"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/7483_2191_1062_sched"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "NX5500",
+      "modelType": "AssetAdministrationShell",
+      "id": "https://example.com/ids/aas/2405_6010_2062_9026",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/2405_6010_2062_8626"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/2405_6010_2062_9746"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/2405_6010_2062_1836"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/2405_6010_2062_sched"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "Rack01",
+      "modelType": "AssetAdministrationShell",
+      "id": "https://example.com/ids/aas/4410_9132_2062_5571",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://example.com/ids/asset/0170_9132_2062_1186"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/6080_9132_2062_9138"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://example.com/ids/sm/4410_9132_2062_sched"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "submodels": [
+    {
+      "extensions": [
+        {
+          "value": "127.0.0.1",
+          "valueType": "xs:string",
+          "name": "host"
+        },
+        {
+          "value": "5001",
+          "valueType": "xs:int",
+          "name": "port"
+        },
+        {
+          "value": "1",
+          "valueType": "xs:int",
+          "name": "machineId"
+        }
+      ],
+      "idShort": "cncGateway",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/2094_7101_1062_5375",
+      "submodelElements": [
+        {
+          "idShort": "isConnected",
+          "modelType": "Property",
+          "value": "false",
+          "valueType": "xs:boolean"
+        },
+        {
+          "idShort": "status",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/variable/userVariable",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1&variable=100",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "mapping",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                },
+                {
+                  "value": "0:closed, 1:open",
+                  "valueType": "xs:string",
+                  "name": "valueMap"
+                }
+              ],
+              "idShort": "doorState",
+              "modelType": "Property",
+              "value": "open",
+              "valueType": "xs:string"
+            },
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/axis/machinePosition",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1&axis=1",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "direct",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                }
+              ],
+              "idShort": "machinePositionX",
+              "modelType": "Property",
+              "value": "0.0",
+              "valueType": "xs:double"
+            }
+          ]
+        },
+        {
+          "idShort": "queries",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/variable/userVariable",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1&variable=101",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "direct",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                }
+              ],
+              "idShort": "macroValue101",
+              "modelType": "Property",
+              "value": "0.0",
+              "valueType": "xs:double"
+            },
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/ncState",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "direct",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                }
+              ],
+              "idShort": "ncState",
+              "modelType": "Property",
+              "value": "0.0",
+              "valueType": "xs:double"
+            }
+          ]
+        },
+        {
+          "idShort": "commands",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/variable/userVariable",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1&variable=100",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "pulse",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                },
+                {
+                  "value": "1.0",
+                  "valueType": "xs:double",
+                  "name": "valueOn"
+                },
+                {
+                  "valueType": "xs:double",
+                  "name": "valueOff"
+                }
+              ],
+              "idShort": "openDoor",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "문을 여는 명령"
+                }
+              ],
+              "modelType": "Operation"
+            },
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/variable/userVariable",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "direct",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                }
+              ],
+              "idShort": "updateMacro",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "variable",
+                    "modelType": "Property",
+                    "value": "100",
+                    "valueType": "xs:int"
+                  }
+                },
+                {
+                  "value": {
+                    "idShort": "value",
+                    "modelType": "Property",
+                    "value": "",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            },
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/files/cncFileExecute",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "direct",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                }
+              ],
+              "idShort": "excuteMainProgram",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "path",
+                    "modelType": "Property",
+                    "value": "100",
+                    "valueType": "xs:int"
+                  }
+                },
+                {
+                  "value": {
+                    "idShort": "value",
+                    "modelType": "Property",
+                    "value": "true",
+                    "valueType": "xs:boolean"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "extensions": [
+            {
+              "value": "//CNC_MEM/USER/PATH1/",
+              "valueType": "xs:string",
+              "name": "defaultTargetDirectory"
+            }
+          ],
+          "idShort": "uploadPartProgram",
+          "modelType": "Operation",
+          "inputVariables": [
+            {
+              "value": {
+                "idShort": "ncPath",
+                "modelType": "Property",
+                "value": "",
+                "valueType": "xs:string"
+              }
+            }
+          ]
+        },
+        {
+          "extensions": [
+            {
+              "value": "//CNC_MEM/USER/PATH1/",
+              "valueType": "xs:string",
+              "name": "defaultTargetDirectory"
+            }
+          ],
+          "idShort": "deletePartProgram",
+          "modelType": "Operation",
+          "inputVariables": [
+            {
+              "value": {
+                "idShort": "ncPath",
+                "modelType": "Property",
+                "value": "",
+                "valueType": "xs:string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "workInformation",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/1060_0211_1062_4090",
+      "submodelElements": [
+        {
+          "idShort": "currentWorkId",
+          "modelType": "Property",
+          "valueType": "xs:string"
+        }
+      ]
+    },
+    {
+      "extensions": [
+        {
+          "value": "10.10.10.228",
+          "valueType": "xs:string",
+          "name": "host"
+        },
+        {
+          "value": "8200",
+          "valueType": "xs:int",
+          "name": "port"
+        },
+        {
+          "value": "DOOSAN_MOMA",
+          "valueType": "xs:string",
+          "name": "serialNumber"
+        }
+      ],
+      "idShort": "robotGateway",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/2201_3162_1062_7426",
+      "submodelElements": [
+        {
+          "idShort": "isConnected",
+          "modelType": "Property",
+          "value": "false",
+          "valueType": "xs:boolean"
+        },
+        {
+          "idShort": "status",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "status",
+              "modelType": "Property",
+              "value": "NONE",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "agvPositionX",
+              "modelType": "Property",
+              "value": "0.0",
+              "valueType": "xs:double"
+            },
+            {
+              "idShort": "agvPositionY",
+              "modelType": "Property",
+              "value": "0.0",
+              "valueType": "xs:double"
+            }
+          ]
+        },
+        {
+          "idShort": "queries",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "/api/devices/{serialNumber}/slots/input/available",
+                  "valueType": "xs:string",
+                  "name": "endpoint"
+                },
+                {
+                  "value": "slotId",
+                  "valueType": "xs:string",
+                  "name": "valueKey"
+                }
+              ],
+              "idShort": "availableInputSlot",
+              "modelType": "Property",
+              "valueType": "xs:string"
+            },
+            {
+              "extensions": [
+                {
+                  "value": "/api/devices/{serialNumber}/slots/output/available",
+                  "valueType": "xs:string",
+                  "name": "endpoint"
+                },
+                {
+                  "value": "slotId",
+                  "valueType": "xs:string",
+                  "name": "valueKey"
+                }
+              ],
+              "idShort": "availableOutputSlot",
+              "modelType": "Property",
+              "valueType": "xs:string"
+            }
+          ]
+        },
+        {
+          "idShort": "commands",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "pick",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "location",
+                    "modelType": "Property",
+                    "valueType": "xs:string"
+                  }
+                },
+                {
+                  "value": {
+                    "idShort": "slotId",
+                    "modelType": "Property",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            },
+            {
+              "idShort": "move",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "location",
+                    "modelType": "Property",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            },
+            {
+              "idShort": "place",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "location",
+                    "modelType": "Property",
+                    "valueType": "xs:string"
+                  }
+                },
+                {
+                  "value": {
+                    "idShort": "slotId",
+                    "modelType": "Property",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            },
+            {
+              "idShort": "start_process",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "location",
+                    "modelType": "Property",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "workInformation",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/9214_7072_1062_7607",
+      "submodelElements": [
+        {
+          "idShort": "currentWorkId",
+          "modelType": "Property",
+          "valueType": "xs:string"
+        }
+      ]
+    },
+    {
+      "extensions": [
+        {
+          "value": "127.0.0.1",
+          "valueType": "xs:string",
+          "name": "host"
+        },
+        {
+          "value": "5001",
+          "valueType": "xs:int",
+          "name": "port"
+        },
+        {
+          "value": "2",
+          "valueType": "xs:int",
+          "name": "machineId"
+        }
+      ],
+      "idShort": "cncGateway",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/2405_6010_2062_1836",
+      "submodelElements": [
+        {
+          "idShort": "isConnected",
+          "modelType": "Property",
+          "value": "false",
+          "valueType": "xs:boolean"
+        },
+        {
+          "idShort": "status",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/variable/userVariable",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1&variable=100",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "mapping",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                },
+                {
+                  "value": "0:closed, 1:open",
+                  "valueType": "xs:string",
+                  "name": "valueMap"
+                }
+              ],
+              "idShort": "doorState",
+              "modelType": "Property",
+              "value": "open",
+              "valueType": "xs:string"
+            },
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/axis/machinePosition",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1&axis=1",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "direct",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                }
+              ],
+              "idShort": "machinePositionX",
+              "modelType": "Property",
+              "value": "0.0",
+              "valueType": "xs:double"
+            }
+          ]
+        },
+        {
+          "idShort": "queries",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/variable/userVariable",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1&variable=101",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "direct",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                }
+              ],
+              "idShort": "MacroValue101",
+              "modelType": "Property",
+              "value": "0.0",
+              "valueType": "xs:double"
+            }
+          ]
+        },
+        {
+          "idShort": "commands",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/variable/userVariable",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1&variable=100",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "pulse",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                },
+                {
+                  "value": "1.0",
+                  "valueType": "xs:double",
+                  "name": "valueOn"
+                },
+                {
+                  "valueType": "xs:double",
+                  "name": "valueOff"
+                }
+              ],
+              "idShort": "openDoor",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "문을 여는 명령"
+                }
+              ],
+              "modelType": "Operation"
+            },
+            {
+              "extensions": [
+                {
+                  "value": "data://machine/channel/variable/userVariable",
+                  "valueType": "xs:string",
+                  "name": "address"
+                },
+                {
+                  "value": "channel=1",
+                  "valueType": "xs:string",
+                  "name": "filter"
+                },
+                {
+                  "value": "direct",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                }
+              ],
+              "idShort": "updateMacro",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "value",
+                    "modelType": "Property",
+                    "value": "",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "workInformation",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/2405_6010_2062_9746",
+      "submodelElements": [
+        {
+          "idShort": "currentWorkId",
+          "modelType": "Property",
+          "valueType": "xs:string"
+        }
+      ]
+    },
+    {
+      "extensions": [
+        {
+          "value": "10.10.10.210",
+          "valueType": "xs:string",
+          "name": "host"
+        },
+        {
+          "value": "502",
+          "valueType": "xs:int",
+          "name": "port"
+        },
+        {
+          "value": "1",
+          "valueType": "xs:int",
+          "name": "deviceId"
+        }
+      ],
+      "idShort": "modbusGateway",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/0292_1110_2062_6380",
+      "submodelElements": [
+        {
+          "idShort": "status",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "coil",
+                  "valueType": "xs:string",
+                  "name": "type"
+                },
+                {
+                  "value": "16",
+                  "valueType": "xs:int",
+                  "name": "address"
+                },
+                {
+                  "value": "mapping",
+                  "valueType": "xs:string",
+                  "name": "logic"
+                },
+                {
+                  "value": "0:unClamp, 1:clamp",
+                  "valueType": "xs:string",
+                  "name": "valueMap"
+                }
+              ],
+              "idShort": "viseState",
+              "modelType": "Property",
+              "value": "unClamp",
+              "valueType": "xs:string"
+            }
+          ]
+        },
+        {
+          "idShort": "commands",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "coil",
+                  "valueType": "xs:string",
+                  "name": "type"
+                },
+                {
+                  "value": "16",
+                  "valueType": "xs:int",
+                  "name": "address"
+                },
+                {
+                  "value": "1",
+                  "valueType": "xs:int",
+                  "name": "value"
+                }
+              ],
+              "idShort": "clampVise",
+              "modelType": "Operation"
+            },
+            {
+              "extensions": [
+                {
+                  "value": "coil",
+                  "valueType": "xs:string",
+                  "name": "type"
+                },
+                {
+                  "value": "16",
+                  "valueType": "xs:int",
+                  "name": "address"
+                },
+                {
+                  "valueType": "xs:int",
+                  "name": "value"
+                }
+              ],
+              "idShort": "unClampVise",
+              "modelType": "Operation"
+            }
+          ]
+        },
+        {
+          "idShort": "isConnected",
+          "modelType": "Property",
+          "value": "false",
+          "valueType": "xs:boolean"
+        }
+      ]
+    },
+    {
+      "extensions": [
+        {
+          "value": "localhost",
+          "valueType": "xs:string",
+          "name": "host"
+        },
+        {
+          "value": "8101",
+          "valueType": "xs:int",
+          "name": "port"
+        },
+        {
+          "value": "shelf-01",
+          "valueType": "xs:string",
+          "name": "deviceId"
+        }
+      ],
+      "idShort": "httpGateway",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/6080_9132_2062_9138",
+      "submodelElements": [
+        {
+          "idShort": "status",
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "queries",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "/devices/{deviceId}/slots/empty/first",
+                  "valueType": "xs:string",
+                  "name": "endpoint"
+                },
+                {
+                  "value": "slot_id",
+                  "valueType": "xs:string",
+                  "name": "valueKey"
+                }
+              ],
+              "idShort": "firstEmptySlot",
+              "modelType": "Property",
+              "valueType": "xs:string"
+            },
+            {
+              "extensions": [
+                {
+                  "value": "/devices/{deviceId}/slots/occupied/first?content=material",
+                  "valueType": "xs:string",
+                  "name": "endpoint"
+                },
+                {
+                  "value": "slot_id",
+                  "valueType": "xs:string",
+                  "name": "valueKey"
+                }
+              ],
+              "idShort": "firstOccupiedSlot",
+              "modelType": "Property",
+              "valueType": "xs:string"
+            }
+          ]
+        },
+        {
+          "idShort": "commands",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "extensions": [
+                {
+                  "value": "/devices/{deviceId}/occupy",
+                  "valueType": "xs:string",
+                  "name": "endpoint"
+                }
+              ],
+              "idShort": "input",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "slot_id",
+                    "modelType": "Property",
+                    "valueType": "xs:string"
+                  }
+                },
+                {
+                  "value": {
+                    "idShort": "content",
+                    "modelType": "Property",
+                    "value": "",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            },
+            {
+              "extensions": [
+                {
+                  "value": "/devices/{deviceId}/release",
+                  "valueType": "xs:string",
+                  "name": "endpoint"
+                }
+              ],
+              "idShort": "output",
+              "modelType": "Operation",
+              "inputVariables": [
+                {
+                  "value": {
+                    "idShort": "slot_id",
+                    "modelType": "Property",
+                    "valueType": "xs:string"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "schedulerInfo",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/5154_7101_1062_sched",
+      "description": [
+        {
+          "language": "ko",
+          "text": "셀 스케줄러용 DH400 정적 설정 정보"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "machineType",
+          "modelType": "Property",
+          "value": "VMC_3AXIS_MASS",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "status",
+          "modelType": "Property",
+          "value": "available",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "setupChangeTimeMin",
+          "modelType": "Property",
+          "value": "15",
+          "valueType": "xs:int"
+        },
+        {
+          "idShort": "currentSetupId",
+          "modelType": "Property",
+          "value": "TS-MASS-001",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "machineTypeParams",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "loadingType",
+              "modelType": "Property",
+              "value": "buffer_exchange",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "amrTransportQty",
+              "modelType": "Property",
+              "value": "3",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "exchangeTimeSec",
+              "modelType": "Property",
+              "value": "45",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "loadUnloadTimeSec",
+              "modelType": "Property",
+              "value": "0",
+              "valueType": "xs:int"
+            }
+          ]
+        },
+        {
+          "idShort": "buffer",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "totalSlots",
+              "modelType": "Property",
+              "value": "6",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "materialSlots",
+              "modelType": "Property",
+              "value": "3",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "finishedSlots",
+              "modelType": "Property",
+              "value": "3",
+              "valueType": "xs:int"
+            }
+          ]
+        },
+        {
+          "idShort": "calendar",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "shiftStart",
+              "modelType": "Property",
+              "value": "08:00",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "shiftEnd",
+              "modelType": "Property",
+              "value": "20:00",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "breaks",
+              "modelType": "SubmodelElementCollection",
+              "value": [
+                {
+                  "idShort": "break_0",
+                  "modelType": "SubmodelElementCollection",
+                  "value": [
+                    {
+                      "idShort": "start",
+                      "modelType": "Property",
+                      "value": "12:00",
+                      "valueType": "xs:string"
+                    },
+                    {
+                      "idShort": "end",
+                      "modelType": "Property",
+                      "value": "13:00",
+                      "valueType": "xs:string"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "schedulerInfo",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/2405_6010_2062_sched",
+      "description": [
+        {
+          "language": "ko",
+          "text": "셀 스케줄러용 NX5500 정적 설정 정보"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "machineType",
+          "modelType": "Property",
+          "value": "VMC_3AXIS_PALLET",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "status",
+          "modelType": "Property",
+          "value": "available",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "setupChangeTimeMin",
+          "modelType": "Property",
+          "value": "5",
+          "valueType": "xs:int"
+        },
+        {
+          "idShort": "currentSetupId",
+          "modelType": "Property",
+          "value": "TS-PLT-001",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "machineTypeParams",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "loadingType",
+              "modelType": "Property",
+              "value": "pallet_single",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "amrTransportQty",
+              "modelType": "Property",
+              "value": "1",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "exchangeTimeSec",
+              "modelType": "Property",
+              "value": "0",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "loadUnloadTimeSec",
+              "modelType": "Property",
+              "value": "30",
+              "valueType": "xs:int"
+            }
+          ]
+        },
+        {
+          "idShort": "calendar",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "shiftStart",
+              "modelType": "Property",
+              "value": "08:00",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "shiftEnd",
+              "modelType": "Property",
+              "value": "20:00",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "breaks",
+              "modelType": "SubmodelElementCollection",
+              "value": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "schedulerInfo",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/7483_2191_1062_sched",
+      "description": [
+        {
+          "language": "ko",
+          "text": "셀 스케줄러용 DOOSAN_MOMA AMR 정적 설정 정보"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "machineType",
+          "modelType": "Property",
+          "value": "AMR",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "model",
+          "modelType": "Property",
+          "value": "MiR250",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "status",
+          "modelType": "Property",
+          "value": "available",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "speedMPerSec",
+          "modelType": "Property",
+          "value": "1.0",
+          "valueType": "xs:double"
+        },
+        {
+          "idShort": "accessibleMachines",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "machine_0",
+              "modelType": "Property",
+              "value": "https://example.com/ids/aas/5154_7101_1062_2938",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "machine_1",
+              "modelType": "Property",
+              "value": "https://example.com/ids/aas/2405_6010_2062_9026",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "machine_2",
+              "modelType": "Property",
+              "value": "https://example.com/ids/aas/4410_9132_2062_5571",
+              "valueType": "xs:string"
+            }
+          ]
+        },
+        {
+          "idShort": "capacityByType",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "VMC_3AXIS_MASS",
+              "modelType": "Property",
+              "value": "3",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "VMC_3AXIS_PALLET",
+              "modelType": "Property",
+              "value": "1",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "RACK",
+              "modelType": "Property",
+              "value": "1",
+              "valueType": "xs:int"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idShort": "schedulerInfo",
+      "modelType": "Submodel",
+      "id": "https://example.com/ids/sm/4410_9132_2062_sched",
+      "description": [
+        {
+          "language": "ko",
+          "text": "셀 스케줄러용 Rack01 정적 설정 정보"
+        }
+      ],
+      "submodelElements": [
+        {
+          "idShort": "machineType",
+          "modelType": "Property",
+          "value": "RACK",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "status",
+          "modelType": "Property",
+          "value": "available",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "setupChangeTimeMin",
+          "modelType": "Property",
+          "value": "0",
+          "valueType": "xs:int"
+        },
+        {
+          "idShort": "currentSetupId",
+          "modelType": "Property",
+          "value": "",
+          "valueType": "xs:string"
+        },
+        {
+          "idShort": "machineTypeParams",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "loadingType",
+              "modelType": "Property",
+              "value": "direct",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "amrTransportQty",
+              "modelType": "Property",
+              "value": "1",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "exchangeTimeSec",
+              "modelType": "Property",
+              "value": "0",
+              "valueType": "xs:int"
+            },
+            {
+              "idShort": "loadUnloadTimeSec",
+              "modelType": "Property",
+              "value": "15",
+              "valueType": "xs:int"
+            }
+          ]
+        },
+        {
+          "idShort": "capacity",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "totalSlots",
+              "modelType": "Property",
+              "value": "20",
+              "valueType": "xs:int"
+            }
+          ]
+        },
+        {
+          "idShort": "calendar",
+          "modelType": "SubmodelElementCollection",
+          "value": [
+            {
+              "idShort": "shiftStart",
+              "modelType": "Property",
+              "value": "00:00",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "shiftEnd",
+              "modelType": "Property",
+              "value": "23:59",
+              "valueType": "xs:string"
+            },
+            {
+              "idShort": "breaks",
+              "modelType": "SubmodelElementCollection",
+              "value": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

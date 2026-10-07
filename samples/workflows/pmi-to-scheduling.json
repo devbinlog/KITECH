@@ -1,0 +1,39 @@
+{
+  "name": "pmi-to-scheduling",
+  "description": "Extract PMI from STEP AP242 and use for intelligent scheduling",
+  "version": "1.0",
+  "stages": [
+    {
+      "name": "pmi_extraction",
+      "agent": "step-pmi-reader",
+      "description": "Extract PMI (GD&T) data from STEP AP242 file",
+      "enabled": true,
+      "config": {
+        "step_path": null
+      }
+    },
+    {
+      "name": "cell_scheduling",
+      "agent": "cell-scheduler",
+      "description": "Schedule with PMI-informed priorities",
+      "enabled": true,
+      "config": {
+        "optimization_level": "high",
+        "scheduling_horizon": "7d",
+        "use_pmi_priorities": true
+      }
+    },
+    {
+      "name": "schedule_visualization",
+      "agent": "cell-schedule-visualizer",
+      "description": "Visualize the PMI-informed schedule",
+      "enabled": true,
+      "config": {
+        "format": "html",
+        "include_gantt": true,
+        "include_statistics": true,
+        "highlight_critical_tolerances": true
+      }
+    }
+  ]
+}

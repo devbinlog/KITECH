@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "digital-thread-project-manager"
+version = "0.1.0"
+description = "Digital Thread Project Manager - CAM to ISO 14649 XML converter"
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    "xsdata>=24.0",
+    "xmltodict>=0.13.0",
+    "pyyaml>=6.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.20.0",
+    "motor>=3.3.0",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
+    "fastapi-mcp",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "mypy>=1.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+markers = [
+    "integration: requires running DTP server + MongoDB (use -m integration to run)",
+]

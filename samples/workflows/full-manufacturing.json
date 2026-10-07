@@ -1,0 +1,48 @@
+{
+  "name": "full-manufacturing",
+  "description": "Complete manufacturing pipeline: parse, analyze, schedule, and visualize",
+  "version": "1.0",
+  "stages": [
+    {
+      "name": "gcode_parsing",
+      "agent": "gcode-parser",
+      "description": "Parse G-code file and extract machining operations",
+      "enabled": true,
+      "config": {
+        "export_blocks": false,
+        "format": "json"
+      }
+    },
+    {
+      "name": "cam_analysis",
+      "agent": "cam-runner",
+      "description": "Analyze cutting paths using CAM runner",
+      "enabled": true,
+      "config": {
+        "use_opencamlib": true,
+        "use_dexel": false
+      }
+    },
+    {
+      "name": "cell_scheduling",
+      "agent": "cell-scheduler",
+      "description": "Schedule manufacturing operations on cell machines",
+      "enabled": true,
+      "config": {
+        "optimization_level": "high",
+        "scheduling_horizon": "3d"
+      }
+    },
+    {
+      "name": "schedule_visualization",
+      "agent": "cell-schedule-visualizer",
+      "description": "Generate visualization of the schedule",
+      "enabled": true,
+      "config": {
+        "format": "html",
+        "include_gantt": true,
+        "include_statistics": true
+      }
+    }
+  ]
+}

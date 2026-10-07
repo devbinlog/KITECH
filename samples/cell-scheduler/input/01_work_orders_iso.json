@@ -1,0 +1,172 @@
+{
+  "work_orders": [
+    {
+      "wo_id": "WO-2025-0117-001",
+      "product_id": "ISO-001",
+      "product_name": "ISO10791_001 샘플 부품",
+      "order_quantity": 100,
+      "due_date": "2025-01-18T20:00:00",
+      "priority": 1,
+      "release_date": "2025-01-17T08:00:00",
+      "customer": "샘플 테스트",
+      "material": "AL6061-T6",
+      "jobs": [
+        {
+          "job_id": "JOB-ISO-001",
+          "part_id": "ISO-001",
+          "part_name": "ISO10791_001 샘플 부품",
+          "quantity": 100,
+          "material": "AL6061-T6",
+          "operations": [
+            {
+              "op_id": "OP10",
+              "op_name": "황삭 - 3축 밀링",
+              "sequence": 1,
+              "predecessors": [],
+              "required_machine_type": "VMC_3AXIS_MASS",
+              "setup_id": "TS-MASS-001",
+              "nc_code": {
+                "program_id": "ISO10791_001",
+                "file_path": "samples/gcode-parser/ISO10791/ISO10791_001.nc",
+                "cycle_time_sec": 180,
+                "cycle_time_confidence": 0.90,
+                "tool_list": ["T01", "T02"],
+                "tool_change_count": 1,
+                "compatible_machines": ["MCH-001", "MCH-002"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wo_id": "WO-2025-0117-002",
+      "product_id": "ISO-002",
+      "product_name": "ISO10791_010 샘플 부품",
+      "order_quantity": 120,
+      "due_date": "2025-01-19T20:00:00",
+      "priority": 2,
+      "release_date": "2025-01-17T08:00:00",
+      "customer": "샘플 테스트",
+      "material": "AL6061-T6",
+      "jobs": [
+        {
+          "job_id": "JOB-ISO-002",
+          "part_id": "ISO-002",
+          "part_name": "ISO10791_010 샘플 부품",
+          "quantity": 120,
+          "material": "AL6061-T6",
+          "operations": [
+            {
+              "op_id": "OP10",
+              "op_name": "황삭 - 3축 팔레트",
+              "sequence": 1,
+              "predecessors": [],
+              "required_machine_type": "VMC_3AXIS_PALLET",
+              "setup_id": "TS-PLT-001",
+              "nc_code": {
+                "program_id": "ISO10791_010",
+                "file_path": "samples/gcode-parser/ISO10791/ISO10791_010.nc",
+                "cycle_time_sec": 240,
+                "cycle_time_confidence": 0.88,
+                "tool_list": ["T01", "T02", "T03"],
+                "tool_change_count": 2,
+                "compatible_machines": ["MCH-003", "MCH-004"]
+              }
+            },
+            {
+              "op_id": "OP20",
+              "op_name": "정삭 - 4축 팔레트",
+              "sequence": 2,
+              "predecessors": ["OP10"],
+              "required_machine_type": "VMC_4AXIS_PALLET",
+              "setup_id": "TS-4AX-001",
+              "nc_code": {
+                "program_id": "ISO10791_010_OP20",
+                "file_path": "samples/gcode-parser/ISO10791/ISO10791_010.nc",
+                "cycle_time_sec": 200,
+                "cycle_time_confidence": 0.92,
+                "tool_list": ["T01", "T02"],
+                "tool_change_count": 1,
+                "compatible_machines": ["MCH-003", "MCH-004"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wo_id": "WO-2025-0117-003",
+      "product_id": "ISO-003",
+      "product_name": "ISO10791_050 샘플 부품",
+      "order_quantity": 150,
+      "due_date": "2025-01-20T10:00:00",
+      "priority": 3,
+      "release_date": "2025-01-17T08:00:00",
+      "customer": "샘플 테스트",
+      "material": "Steel-45C",
+      "jobs": [
+        {
+          "job_id": "JOB-ISO-003",
+          "part_id": "ISO-003",
+          "part_name": "ISO10791_050 샘플 부품",
+          "quantity": 150,
+          "material": "Steel-45C",
+          "operations": [
+            {
+              "op_id": "OP10",
+              "op_name": "황삭 - 3축 밀링",
+              "sequence": 1,
+              "predecessors": [],
+              "required_machine_type": "VMC_3AXIS_MASS",
+              "setup_id": "TS-MASS-002",
+              "nc_code": {
+                "program_id": "ISO10791_050",
+                "file_path": "samples/gcode-parser/ISO10791/ISO10791_050.nc",
+                "cycle_time_sec": 360,
+                "cycle_time_confidence": 0.85,
+                "tool_list": ["T01", "T02", "T03", "T04"],
+                "tool_change_count": 3,
+                "compatible_machines": ["MCH-001", "MCH-002"]
+              }
+            },
+            {
+              "op_id": "OP20",
+              "op_name": "정삭 - 3축 팔레트",
+              "sequence": 2,
+              "predecessors": ["OP10"],
+              "required_machine_type": "VMC_3AXIS_PALLET",
+              "setup_id": "TS-PLT-002",
+              "nc_code": {
+                "program_id": "ISO10791_050_OP20",
+                "file_path": "samples/gcode-parser/ISO10791/ISO10791_050.nc",
+                "cycle_time_sec": 280,
+                "cycle_time_confidence": 0.89,
+                "tool_list": ["T01", "T02"],
+                "tool_change_count": 1,
+                "compatible_machines": ["MCH-002", "MCH-003"]
+              }
+            },
+            {
+              "op_id": "OP30",
+              "op_name": "선삭 - 하드터닝",
+              "sequence": 3,
+              "predecessors": ["OP20"],
+              "required_machine_type": "HARD_TURNING",
+              "setup_id": "TS-HT-001",
+              "nc_code": {
+                "program_id": "ISO10791_050_OP30",
+                "file_path": "samples/gcode-parser/ISO10791/ISO10791_050.nc",
+                "cycle_time_sec": 150,
+                "cycle_time_confidence": 0.91,
+                "tool_list": ["T01"],
+                "tool_change_count": 0,
+                "compatible_machines": ["MCH-004"]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

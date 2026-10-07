@@ -1,0 +1,262 @@
+{
+  "PRODUCT_INFO": [
+    {
+      "PRODUCT_ID": "PLAT-A002"
+    }
+  ],
+  "MATERIAL_INFO": [
+    {
+      "MATERIAL_ID": "MT_PLAT-A002",
+      "PRODUCT_ID": "PLAT-A002"
+    }
+  ],
+  "PROCESS_INFO": [
+    {
+      "PROCESS_INFO_ID": "PP_PLAT-A002_LOAD",
+      "PRODUCT_ID": "PLAT-A002",
+      "PROCESS_OPERATION_INFO": [
+        {
+          "PROCESS_OPERATION_INFO_ID": "OR_PLAT-A002_LOAD_FEEDER",
+          "MACHINE_TYPE_ID": "FEEDER_TYPE",
+          "PROCESSING_TIME": "30"
+        }
+      ],
+      "CONSUMED_MATERIAL_INFO": [
+        {
+          "CONSUMED_MATERIAL_INFO_ID": "CMI_PLAT-A002_LOAD",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "PROC_NUM": "1",
+          "MATERIAL_NUM": "1"
+        }
+      ],
+      "PRODUCED_MATERIAL_INFO": [
+        {
+          "PRODUCED_MATERIAL_INFO_ID": "PMI_PLAT-A002_LOAD",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "PROC_NUM": "2",
+          "MATERIAL_NUM": "1"
+        }
+      ]
+    },
+    {
+      "PROCESS_INFO_ID": "PP_PLAT-A002_MILL",
+      "PRODUCT_ID": "PLAT-A002",
+      "PROCESS_OPERATION_INFO": [
+        {
+          "PROCESS_OPERATION_INFO_ID": "OR_PLAT-A002_MILL_NX5500",
+          "MACHINE_TYPE_ID": "CNC_NX5500",
+          "PROCESSING_TIME": "120"
+        }
+      ],
+      "CONSUMED_MATERIAL_INFO": [
+        {
+          "CONSUMED_MATERIAL_INFO_ID": "CMI_PLAT-A002_MILL",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "PROC_NUM": "2",
+          "MATERIAL_NUM": "1"
+        }
+      ],
+      "PRODUCED_MATERIAL_INFO": [
+        {
+          "PRODUCED_MATERIAL_INFO_ID": "PMI_PLAT-A002_MILL",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "PROC_NUM": "3",
+          "MATERIAL_NUM": "1"
+        }
+      ]
+    },
+    {
+      "PROCESS_INFO_ID": "PP_PLAT-A002_UNLOAD",
+      "PRODUCT_ID": "PLAT-A002",
+      "PROCESS_OPERATION_INFO": [
+        {
+          "PROCESS_OPERATION_INFO_ID": "OR_PLAT-A002_UNLOAD_FEEDER",
+          "MACHINE_TYPE_ID": "FEEDER_TYPE",
+          "PROCESSING_TIME": "45"
+        }
+      ],
+      "CONSUMED_MATERIAL_INFO": [
+        {
+          "CONSUMED_MATERIAL_INFO_ID": "CMI_PLAT-A002_UNLOAD",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "PROC_NUM": "3",
+          "MATERIAL_NUM": "1"
+        }
+      ],
+      "PRODUCED_MATERIAL_INFO": [
+        {
+          "PRODUCED_MATERIAL_INFO_ID": "PMI_PLAT-A002_UNLOAD",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "PROC_NUM": "4",
+          "MATERIAL_NUM": "1"
+        }
+      ]
+    }
+  ],
+  "MATERIAL_HANDLING_INFO": [
+    {
+      "MATERIAL_HANDLING_INFO_ID": "MHI_PLAT-A002_ANT",
+      "MATERIAL_ID": "MT_PLAT-A002",
+      "MHE_TYPE_ID": "MM_ANT_AMR",
+      "HANDLING_BATCH_SIZE": "1",
+      "PUSH_PULL": "PULL",
+      "LOADING_TIME": "45",
+      "UNLOADING_TIME": "45"
+    }
+  ],
+  "MACHINE_TYPE": [
+    {
+      "MACHINE_TYPE_ID": "CNC_NX5500",
+      "RESOURCE_TYPE": "CNC",
+      "CAPACITY": "1",
+      "MEAN_TIME_TO_REPAIR": "12000",
+      "MEAN_TIME_BETWEEN_FAILURE": "99999999"
+    },
+    {
+      "MACHINE_TYPE_ID": "FEEDER_TYPE",
+      "RESOURCE_TYPE": "FEEDER",
+      "CAPACITY": "1",
+      "MEAN_TIME_TO_REPAIR": "999999",
+      "MEAN_TIME_BETWEEN_FAILURE": "99999999"
+    }
+  ],
+  "BUFFER_TYPE": [
+    {
+      "BUFFER_TYPE_ID": "BT_CNC_DIE",
+      "RESOURCE_TYPE": "BUFFER",
+      "CAPACITY": "2"
+    },
+    {
+      "BUFFER_TYPE_ID": "BT_FEEDER_IN",
+      "RESOURCE_TYPE": "BUFFER",
+      "CAPACITY": "10"
+    },
+    {
+      "BUFFER_TYPE_ID": "BT_FEEDER_OUT",
+      "RESOURCE_TYPE": "BUFFER",
+      "CAPACITY": "10"
+    }
+  ],
+  "MM_TYPE": [
+    {
+      "MM_TYPE_ID": "MM_ANT_AMR",
+      "RESOURCE_TYPE": "MM",
+      "OPERATION_SPEED": "80",
+      "TRANSPORTATION_SPEED": "70",
+      "TURN_SPEED": "35",
+      "MOVE_SPEED": "1000",
+      "MEAN_TIME_BETWEEN_FAILURE": "999999",
+      "MEAN_TIME_TO_REPAIR": "999999",
+      "CAPACITY": "1",
+      "BATTERY_CAPACITY": "100",
+      "POWER_TO_CHARGE_LIMIT": "15"
+    }
+  ],
+  "MHR_TYPE": [
+    {
+      "MHR_TYPE_ID": "CR_UR_ROBOT",
+      "RESOURCE_TYPE": "CR",
+      "MEAN_TIME_TO_REPAIR": "999999",
+      "MEAN_TIME_BETWEEN_FAILURE": "999999",
+      "CAPACITY": "1"
+    }
+  ],
+  "PRODUCTION_PLAN": [
+    {
+      "PRODUCTION_PLAN_ID": "PPS_LOT-20260730-001",
+      "PRODUCT_ID": "PLAT-A002",
+      "PRODUCTION_VOLUME": "4",
+      "CURRENT_VOLUME": "4"
+    }
+  ],
+  "MACHINE_INSTANCE": [
+    {
+      "MACHINE_INSTANCE_ID": "NX5500",
+      "MACHINE_TYPE_ID": "CNC_NX5500",
+      "FAILURE_STATUS": [
+        {
+          "FAILURE_STATUS_ID": "FS_NX5500",
+          "FAILURE_TYPE": "",
+          "REMAINING_REPAIR_TIME": ""
+        }
+      ],
+      "WORK_IN_PROCESS_STATUS": [
+        {
+          "WORK_IN_PROCESS_STATUS_ID": "WIPS_NX5500",
+          "PROCESS_OPERATION_INFO_ID": "",
+          "PROCESSED_TIME": ""
+        }
+      ]
+    },
+    {
+      "MACHINE_INSTANCE_ID": "FEEDER",
+      "MACHINE_TYPE_ID": "FEEDER_TYPE",
+      "WORK_IN_PROCESS_STATUS": [
+        {
+          "WORK_IN_PROCESS_STATUS_ID": "WIPS_FEEDER",
+          "PROCESS_OPERATION_INFO_ID": "",
+          "PROCESSED_TIME": ""
+        }
+      ]
+    }
+  ],
+  "BUFFER_INSTANCE": [
+    {
+      "BUFFER_INSTANCE_ID": "CNC_DIE",
+      "BUFFER_TYPE_ID": "BT_CNC_DIE",
+      "WORK_IN_PROCESS_STATUS": [
+        {
+          "WORK_IN_PROCESS_STATUS_ID": "WIPBF_CNC_DIE",
+          "FINISHED_OPERATION_INFO_ID": "OR_PLAT-A002_UNLOAD_FEEDER",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "WORK_IN_PROCESS_NUM": "0"
+        }
+      ]
+    },
+    {
+      "BUFFER_INSTANCE_ID": "FEEDER_IN",
+      "BUFFER_TYPE_ID": "BT_FEEDER_IN",
+      "WORK_IN_PROCESS_STATUS": [
+        {
+          "WORK_IN_PROCESS_STATUS_ID": "WIPBF_FEEDER_IN",
+          "FINISHED_OPERATION_INFO_ID": "",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "WORK_IN_PROCESS_NUM": "0"
+        }
+      ]
+    },
+    {
+      "BUFFER_INSTANCE_ID": "FEEDER_OUT",
+      "BUFFER_TYPE_ID": "BT_FEEDER_OUT",
+      "WORK_IN_PROCESS_STATUS": [
+        {
+          "WORK_IN_PROCESS_STATUS_ID": "WIPBF_FEEDER_OUT",
+          "FINISHED_OPERATION_INFO_ID": "",
+          "MATERIAL_ID": "MT_PLAT-A002",
+          "WORK_IN_PROCESS_NUM": "0"
+        }
+      ]
+    }
+  ],
+  "MM_INSTANCE": [
+    {
+      "MM_INSTANCE_ID": "ANT_AMR",
+      "MM_TYPE_ID": "MM_ANT_AMR",
+      "MATERIAL_HANDLING_STATUS": [
+        {
+          "MATERIAL_HANDLING_STATUS_ID": "MHS_ANT_AMR",
+          "MATERIAL_HANDLING_INFO_ID": "",
+          "CURRENT_POSITION_X": "",
+          "CURRENT_POSITION_Y": "",
+          "CURRENT_POSITION_Z": ""
+        }
+      ]
+    }
+  ],
+  "MHR_INSTANCE": [
+    {
+      "MHR_INSTANCE_ID": "UR_ROBOT",
+      "MHR_TYPE_ID": "CR_UR_ROBOT"
+    }
+  ]
+}

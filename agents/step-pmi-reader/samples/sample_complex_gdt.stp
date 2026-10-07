@@ -1,0 +1,68 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('Complex GD&T Sample'),'2;1');
+FILE_NAME('sample_complex_gdt.stp','2026-02-10T00:00:00',('Test'),('Test'),'','','');
+FILE_SCHEMA(('AUTOMOTIVE_DESIGN'));
+ENDSEC;
+DATA;
+/* Complex GD&T with all tolerance types */
+#1 = PRODUCT('ComplexPart','GD&T Demo','',(#2));
+#2 = PRODUCT_CONTEXT('',#3,'mechanical');
+#3 = APPLICATION_CONTEXT('automotive design');
+
+/* Full datum system */
+#100 = DATUM('Primary Datum','A');
+#101 = DATUM_FEATURE('Datum Feature A',#100,#5);
+#102 = DATUM('Secondary Datum','B');
+#103 = DATUM_FEATURE('Datum Feature B',#102,#5);
+#104 = DATUM('Tertiary Datum','C');
+#105 = DATUM_FEATURE('Datum Feature C',#104,#5);
+#106 = DATUM_TARGET('Target Point 1',#100,#5);
+#107 = DATUM_REFERENCE('Ref to A',#100);
+
+/* Form Tolerances (no datum reference needed) */
+#200 = FLATNESS_TOLERANCE('Surface Flat',0.005);
+#201 = STRAIGHTNESS_TOLERANCE('Edge Straight',0.01);
+#202 = CIRCULARITY_TOLERANCE('Bore Circle',0.008);
+#203 = CYLINDRICITY_TOLERANCE('Bore Cylinder',0.012);
+
+/* Orientation Tolerances */
+#210 = PERPENDICULARITY_TOLERANCE('Perpendicular',0.015,#100);
+#211 = PARALLELISM_TOLERANCE('Parallel',0.02,#100);
+#212 = ANGULARITY_TOLERANCE('Angled Face',0.025,#100);
+
+/* Location Tolerances */
+#220 = POSITION_TOLERANCE('Hole Position',0.05,#100,#102,#104);
+#221 = CONCENTRICITY_TOLERANCE('Bore Concentric',0.03,#100);
+#222 = SYMMETRY_TOLERANCE('Symmetric Feature',0.04,#100,#102);
+
+/* Profile Tolerances */
+#230 = SURFACE_PROFILE_TOLERANCE('Surface Profile',0.1,#100);
+#231 = LINE_PROFILE_TOLERANCE('Line Profile',0.08,#100);
+
+/* Runout Tolerances */
+#240 = RUNOUT_TOLERANCE('Circular Runout',0.02,#100);
+#241 = TOTAL_RUNOUT_TOLERANCE('Total Runout',0.03,#100);
+
+/* Combined tolerances */
+#250 = GEOMETRIC_TOLERANCE_WITH_DATUM_REFERENCE('Combined',0.025,#100,#102,#104);
+#251 = GEOMETRIC_TOLERANCE('General',0.1,#5);
+
+/* Dimensional */
+#300 = DIMENSIONAL_SIZE('Main Length',250.0,0.05,-0.05);
+#301 = LINEAR_DIMENSION('Feature Distance',50.0,0.1,-0.1);
+#302 = DIAMETER_DIMENSION('Bore OD',25.0,0.018,0.0);
+#303 = ANGULAR_DIMENSION('Chamfer',45.0,1.0,-1.0);
+#304 = RADIAL_DIMENSION('Corner Radius',3.0,0.2,-0.2);
+
+/* Surface */
+#400 = SURFACE_ROUGHNESS('Fine Ground',0.4);
+#401 = SURFACE_ROUGHNESS('Turned',1.6);
+#402 = SURFACE_TEXTURE_PARAMETER('Ra Spec',3.2);
+
+/* Annotations */
+#500 = ANNOTATION_OCCURRENCE('Critical Note','VERIFY BEFORE ASSEMBLY');
+#501 = DRAUGHTING_CALLOUT('GD&T View',#220);
+
+ENDSEC;
+END-ISO-10303-21;

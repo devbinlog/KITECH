@@ -1,0 +1,186 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Type checking
+.mypy_cache/
+
+# Environment
+.env
+.env.dev
+.env.prod
+.env.local
+.env.*.local
+!.env.example
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+.next/
+.turbo/
+
+# Project specific
+data/
+output/
+*.html
+!templates/*.html
+!docs/mes-interface-db-implementation-report.html
+
+# MyPy cache (nested)
+*/.mypy_cache/
+*/*/.mypy_cache/
+
+# ===== Handover stabilization additions =====
+
+# Debug artifacts (root)
+err.txt
+logs.txt
+uvicorn_procs.log
+test_master_out*.txt
+test_split_out*.txt
+test_utf8.txt
+res_status_test.json
+temp_schema.txt
+gantt-*.png
+downtime-gantt*.png
+scheduler-gantt-*.png
+scheduler-with-downtime.png
+screenshots/
+
+# OS
+__MACOSX/
+.ruff_cache/
+
+# DB backups & sync conflicts
+*.db.bak*
+*Conflict.db
+
+# Cell-MES local dump/debug artifacts
+agents/cell-mes/dump_db*.py
+agents/cell-mes/dump_db*.json
+agents/cell-mes/tmp_wos.json
+agents/cell-mes/equipments.json
+agents/cell-mes/sched_openapi.json
+agents/cell-mes/fix_aas_ids.py
+agents/cell-mes/test_solver_overlap*.py
+agents/cell-mes/err.txt
+agents/cell-mes/db_poll.log
+
+# Cell-MES operational data (NC uploads, runtime scenarios)
+agents/cell-mes/uploads/
+agents/cell-mes/scenarios/
+
+# Generated dumps (not source of truth)
+api_endpoints.txt
+api_list.txt
+middleware_openapi.json
+
+# Next.js build cache
+agents/cell-mes/frontend/tsconfig.tsbuildinfo
+
+# omc local state
+.omc/state/last-tool-error.json
+
+# ===== Cross-platform collab readiness (2026-05-02) =====
+
+# Per-developer state (do not sync across PCs)
+.bkit-memory.json
+.omc/
+.visual-check/
+
+# Local docker overrides (개인 환경별)
+docker-compose.override.yml
+!docker-compose.override.yml.example
+
+# Conda/micromamba caches (DTP 빌드 부산물)
+.conda/
+mamba_root_prefix/
+
+# Scripts working directory
+scripts/.cache/
+
+# pre-commit run cache
+.pre-commit-cache/
+
+# External system outputs / sample data (large, not source-of-truth)
+Digital-Thread/
+step/
+
+# Large binary sample files (exceed GitHub 100MB limit)
+*.tdms
+*.zip
+samples/digital-thread-project-manager/
+
+#claude worktree
+.claude/worktrees/
+
+# Local Git diagnostic reports
+/eol_only_files.txt
+/git_diff_ignore_eol.txt
+/git_diff_stat.txt
+/git_diff_summary.txt
+
+# Local connection settings
+/interface_db_env.txt
+
+# Personal Claude Code settings
+/.claude/settings.local.json
+
+# Local service environment settings (may contain secrets)
+/services.env
+
+# Internal database access guide (contains connection details)
+/agents/mes-interface-db/APS_ACCESS_GUIDE.md

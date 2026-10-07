@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run:*)",
+      "Bash(curl:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(cd:*)",
+      "Bash(npm:*)",
+      "Bash(wc:*)"
+    ]
+  },
+  "skills": {
+    "enabled": true,
+    "autoLoad": [
+      "modern-python",
+      "test-driven-development"
+    ]
+  }
+}

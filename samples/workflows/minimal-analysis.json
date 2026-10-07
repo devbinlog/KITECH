@@ -1,0 +1,27 @@
+{
+  "name": "minimal-analysis",
+  "description": "G-code parsing and CAM analysis workflow",
+  "version": "1.0",
+  "stages": [
+    {
+      "name": "gcode_parsing",
+      "agent": "gcode-parser",
+      "description": "Parse G-code file and extract machining operations",
+      "enabled": true,
+      "config": {
+        "export_blocks": false,
+        "format": "json"
+      }
+    },
+    {
+      "name": "cam_analysis",
+      "agent": "cam-runner",
+      "description": "Analyze cutting paths using CAM runner",
+      "enabled": true,
+      "config": {
+        "use_opencamlib": true,
+        "use_dexel": false
+      }
+    }
+  ]
+}

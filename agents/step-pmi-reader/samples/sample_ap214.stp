@@ -1,0 +1,19 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('STEP AP214 Sample - No PMI'),'2;1');
+FILE_NAME('sample_ap214.stp','2026-02-10T00:00:00',('Test'),('Test'),'AP214','CAD','');
+FILE_SCHEMA(('AP214'));
+ENDSEC;
+DATA;
+/* AP214 - Automotive Design (no semantic PMI) */
+#1 = PRODUCT('AP214_Part','Automotive Part','',(#2));
+#2 = PRODUCT_CONTEXT('',#3,'mechanical');
+#3 = APPLICATION_CONTEXT('automotive design');
+#4 = SHAPE_REPRESENTATION('Shape',(#5),#6);
+#5 = AXIS2_PLACEMENT_3D('',#7,#8,#9);
+#6 = GEOMETRIC_REPRESENTATION_CONTEXT(3);
+#7 = CARTESIAN_POINT('',(0.0,0.0,0.0));
+#8 = DIRECTION('',(0.0,0.0,1.0));
+#9 = DIRECTION('',(1.0,0.0,0.0));
+ENDSEC;
+END-ISO-10303-21;

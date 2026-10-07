@@ -1,0 +1,58 @@
+# Intent → tool selection + args extraction
+# nl-router의 12 skill 기반. tool name은 cell-mes__list_products 형식 (tool_loader가 만든 것).
+version: "1.0"
+
+mappings:
+  production_status:
+    tool: cell-mes__get_equipment_utilization
+    args_from_entities:
+      date: date
+    secondary:
+      - cell-mes__list_work_orders
+
+  equipment_status:
+    tool: cell-mes__list_equipments
+    secondary:
+      - cell-mes__list_alarms
+
+  work_order_list:
+    tool: cell-mes__list_work_orders
+    args_from_entities:
+      status: status
+
+  spc_query:
+    tool: cell-mes__list_inspection_results
+    args_from_entities:
+      product_id: product_id
+
+  ncr_query:
+    tool: cell-mes__list_ncrs
+    args_from_entities:
+      severity: severity
+
+  alarm_query:
+    tool: cell-mes__list_alarms
+    args_from_entities:
+      level: level
+
+  schedule_solve:
+    tool: cell-scheduler__solve_schedule
+
+  schedule_view:
+    tool: cell-scheduler__list_solvers
+
+  gcode_parse:
+    tool: gcode-parser__parse_gcode
+    args_from_entities:
+      gcode: gcode_text
+
+  cam_analyze:
+    tool: cam-runner__analyze_cam_path
+
+  step_pmi:
+    tool: step-pmi-reader__extract_pmi
+
+# Fallback when intent unmapped
+default_fallback:
+  - cell-mes__list_work_orders
+  - cell-mes__list_equipments

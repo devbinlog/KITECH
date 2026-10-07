@@ -1,0 +1,20 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('Minimal PMI Sample'),'2;1');
+FILE_NAME('sample_minimal_pmi.stp','2026-02-10T00:00:00',('Test'),('Test'),'','','');
+FILE_SCHEMA(('AUTOMOTIVE_DESIGN'));
+ENDSEC;
+DATA;
+/* Minimal PMI - single datum and tolerance */
+#1 = PRODUCT('MinimalPart','Minimal','',(#2));
+#2 = PRODUCT_CONTEXT('',#3,'mechanical');
+#3 = APPLICATION_CONTEXT('automotive design');
+
+/* Single datum */
+#10 = DATUM('Primary','A');
+
+/* Single tolerance */
+#20 = FLATNESS_TOLERANCE('Flat',0.1);
+
+ENDSEC;
+END-ISO-10303-21;

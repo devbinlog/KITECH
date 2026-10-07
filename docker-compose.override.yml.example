@@ -1,0 +1,63 @@
+# docker-compose.override.yml.example — 개인 환경별 오버라이드 템플릿
+#
+# 사용법:
+#   1. 본 파일을 docker-compose.override.yml 로 복사
+#      (양쪽 OS 공통):  cp docker-compose.override.yml.example docker-compose.override.yml
+#   2. 필요한 항목만 수정 (포트 충돌 회피, 메모리 제한, 마운트 추가 등)
+#   3. docker compose는 자동으로 .override.yml 를 추가 적용함
+#
+# 주의:
+#   - docker-compose.override.yml 은 .gitignore에 등록되어 SynologyDrive 동기화는 되어도 git 추적 X
+#   - 본 .example 파일은 git 추적됨 (참고용 템플릿)
+#   - 양쪽 PC가 같은 override 를 쓰면 SynologyDrive로 동기화됨 → 의도치 않은 공유 주의
+
+services:
+  # ========================================================================
+  # 예시 1: 포트 충돌 회피 (cell-mes 기본 8000 → 8000이 점유 중일 때 8010으로)
+  # ========================================================================
+  # cell-mes:
+  #   ports:
+  #     - "8010:8000"
+  #   environment:
+  #     - CELL_MES_PORT=8000   # 컨테이너 내부 포트는 그대로
+  #
+  # ※ 외부에서 접근하는 다른 서비스 환경변수도 같이 변경 필요:
+  #    NEXT_PUBLIC_API_URL, MES_API_BASE_URL 등
+
+  # ========================================================================
+  # 예시 2: 개인 마운트 추가 (호스트 데이터 디렉토리 연결)
+  # ========================================================================
+  # cell-mes:
+  #   volumes:
+  #     - C:/Users/xessi/CustomData:/app/custom_data:ro    # Windows
+  #     # - /Users/jeongin/CustomData:/app/custom_data:ro  # Mac
+
+  # ========================================================================
+  # 예시 3: 리소스 제한 (저사양 PC)
+  # ========================================================================
+  # cell-mes:
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 1G
+  #         cpus: '1.0'
+
+  # ========================================================================
+  # 예시 4: VM/DP 실 환경 연동 (운영자만)
+  # ========================================================================
+  # dtp:
+  #   environment:
+  #     - VM_API_URL=https://vm.real.example.com
+  #     - VM_USERNAME=real_user
+  #     - VM_PASSWORD=${VM_PASSWORD_SECRET}     # .env 또는 외부 시크릿 매니저
+  #     - DP_BASE_URL=https://dp.real.example.com
+  #     - DP_API_KEY=${DP_API_KEY_SECRET}
+
+  # ========================================================================
+  # 예시 5: 디버그 모드 (DEBUG=true + reload)
+  # ========================================================================
+  # cell-mes:
+  #   environment:
+  #     - DEBUG=true
+  #     - LOG_LEVEL=DEBUG
+  #   command: uvicorn src.app.main:app --host 0.0.0.0 --port 8000 --reload

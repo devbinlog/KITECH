@@ -1,0 +1,347 @@
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  cell-mes:
+    build:
+      context: .
+      dockerfile: agents/cell-mes/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./agents/cell-mes/data:/app/agents/cell-mes/data
+      - ./agents/cell-mes/uploads:/app/agents/cell-mes/uploads
+    environment:
+      - ENV=development
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=sqlite+aiosqlite:////app/agents/cell-mes/data/mes.db
+      - UPLOAD_DIR=/app/agents/cell-mes/uploads
+      - CELL_MES_PORT=8000
+      # Secrets — 외부 .env에서 주입 (회전 2026-05-02). fallback은 명시적 경고용 placeholder.
+      - SECRET_KEY=${SECRET_KEY:-MISSING-SECRET-KEY-CHECK-DOT-ENV}
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+      # n8n_runner가 n8n에 인증 요청 시 사용할 자격증명 (Basic Auth)
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD:-MISSING-PASSWORD-CHECK-DOT-ENV}
+      # 미들웨어 주소: 로컬=http://host.docker.internal:8100 / 실장비=.env의 MIDDLEWARE_URL로 override
+      - MIDDLEWARE_URL=${MIDDLEWARE_URL:-http://host.docker.internal:8100}
+      # - MIDDLEWARE_URL=${MIDDLEWARE_URL:-http://10.10.10.113:8100}
+      # Digital Thread Platform API
+      - DTP_API_KEY=${DTP_API_KEY:-DTPAPI_0440c551-d3d8-4c00-aa52-016177e46aff}
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  mes-interface-db:
+    image: postgres:16-alpine
+    ports:
+      - "${MES_INTERFACE_DB_PORT:-15433}:5432"
+    environment:
+      - POSTGRES_DB=${MES_INTERFACE_DB_NAME:-mes_interface}
+      - POSTGRES_USER=${MES_INTERFACE_DB_ADMIN_USER:-if_owner}
+      - POSTGRES_PASSWORD=${MES_INTERFACE_DB_ADMIN_PASSWORD:-MISSING-INTERFACE-DB-ADMIN-PASSWORD}
+      - MES_INTERFACE_SYNC_USER=${MES_INTERFACE_SYNC_USER:-if_sync_writer}
+      - MES_INTERFACE_SYNC_PASSWORD=${MES_INTERFACE_SYNC_PASSWORD:-MISSING-INTERFACE-SYNC-PASSWORD}
+      - MES_INTERFACE_APS_READER_USER=${MES_INTERFACE_APS_READER_USER:-aps_user}
+      - MES_INTERFACE_APS_READER_PASSWORD=${MES_INTERFACE_APS_READER_PASSWORD:-MISSING-APS-READER-PASSWORD}
+    volumes:
+      - mes_interface_db_data:/var/lib/postgresql/data
+      - ./agents/mes-interface-db/init:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mes-interface-sync:
+    build:
+      context: agents/mes-interface-sync
+      dockerfile: Dockerfile
+    volumes:
+      - ./agents/cell-mes/data:/source/mes:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SOURCE_SQLITE_PATH=/source/mes/mes.db
+      - TARGET_DB_HOST=mes-interface-db
+      - TARGET_DB_PORT=5432
+      - TARGET_DB_NAME=${MES_INTERFACE_DB_NAME:-mes_interface}
+      - MES_INTERFACE_SYNC_USER=${MES_INTERFACE_SYNC_USER:-if_sync_writer}
+      - MES_INTERFACE_SYNC_PASSWORD=${MES_INTERFACE_SYNC_PASSWORD:-MISSING-INTERFACE-SYNC-PASSWORD}
+      - MES_INTERFACE_APS_READER_USER=${MES_INTERFACE_APS_READER_USER:-aps_user}
+      - MES_INTERFACE_SYNC_SCHEDULE=${MES_INTERFACE_SYNC_SCHEDULE:-02:00,14:00}
+      - MES_INTERFACE_SYNC_TIMEZONE=${MES_INTERFACE_SYNC_TIMEZONE:-Asia/Seoul}
+      - MES_INTERFACE_SYNC_RUN_ON_START=${MES_INTERFACE_SYNC_RUN_ON_START:-true}
+      - EXCLUDED_TABLES=${MES_INTERFACE_EXCLUDED_TABLES:-users,middleware_config,alembic_version}
+      - INTERFACE_VIEW_CONFIG_PATH=config/interface_views.yaml
+    depends_on:
+      mes-interface-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  nl-router:
+    build:
+      context: .
+      dockerfile: agents/nl-router/Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - ENV=development
+      - REDIS_URL=redis://redis:6379
+      - CELL_MES_URL=http://cell-mes:8000
+      - MES_API_BASE_URL=http://cell-mes:8000/api/v1
+      - CELL_SCHEDULER_URL=http://cell-scheduler:8002
+      - NL_ROUTER_PORT=8001
+      # Internal-service-to-service auth (cell-mes 호출 시 사용 가능)
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+    depends_on:
+      - redis
+      - cell-mes
+    restart: unless-stopped
+
+  cell-scheduler:
+    build:
+      context: .
+      dockerfile: agents/cell-scheduler/Dockerfile
+    ports:
+      - "8002:8002"
+    environment:
+      - ENV=development
+      - REDIS_URL=redis://redis:6379
+      - CELL_MES_URL=http://cell-mes:8000
+      - CELL_SCHEDULER_PORT=8002
+    depends_on:
+      - redis
+      - cell-mes
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: agents/cell-mes/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-/}
+      - NEXT_PUBLIC_AGENT_NAME=cell-mes
+      # Sidebar의 외부 n8n editor 링크 대상 (Next.js dev 모드는 시작 시 env read).
+      - NEXT_PUBLIC_N8N_EDITOR_URL=${N8N_EDITOR_URL:-http://localhost:5678}
+      # /chat 페이지의 agent-orchestrator WebSocket 대상.
+      - NEXT_PUBLIC_AGENT_ORCHESTRATOR_URL=${AGENT_ORCHESTRATOR_URL:-http://localhost:8020}
+      # WebSocket /ws/chat 인증용 (audit C1 — dev: INTERNAL_SERVICE_KEY 노출 OK).
+      # 운영 시 user JWT 기반으로 교체 권고.
+      - NEXT_PUBLIC_AGENT_WS_TOKEN=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+    depends_on:
+      - nl-router
+      - cell-mes
+    restart: unless-stopped
+
+  mes-proxy:
+    image: nginx:1.27-alpine
+    ports:
+      - "${MES_PROXY_PORT:-18880}:80"
+    volumes:
+      - ./agents/mes-proxy/mes.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - cell-mes
+    restart: unless-stopped
+
+  n8n:
+    build:
+      context: agents/n8n-yaml
+      dockerfile: Dockerfile
+    container_name: n8n-scenario
+    # Bind to localhost only — cell-mes still reaches via service name `n8n:5678`
+    # within the docker network. External LAN cannot reach the editor.
+    # (Audit C4 mitigation.)
+    ports:
+      - "127.0.0.1:5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./agents/n8n-yaml/data:/data:ro
+    environment:
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - GENERIC_TIMEZONE=Asia/Seoul
+      - TZ=Asia/Seoul
+      - N8N_LOG_LEVEL=info
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
+      # NOTE: n8n 1.0+ deprecated N8N_BASIC_AUTH_*. The 127.0.0.1 port binding
+      # above is now the primary defense. To enable interactive owner-account
+      # auth, visit http://localhost:5678 once and complete the sign-up form
+      # (creates an admin user — required for the public REST API thereafter).
+      # (Audit C4 mitigation: external LAN access blocked via 127.0.0.1 bind.)
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5678/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  dtp:
+    build:
+      context: .
+      dockerfile: agents/digital-thread-project-manager/Dockerfile
+    ports:
+      - "8005:8005"
+    environment:
+      - PYTHONUNBUFFERED=1
+      # Pydantic Settings — required keys; .env 또는 환경변수로 override 가능 (없으면 placeholder).
+      # 실 운영에서는 docker-compose.override.yml 또는 외부 시크릿 매니저 사용 권장.
+      - VM_API_URL=${VM_API_URL:-http://vm-mock.local}
+      - VM_USERNAME=${VM_USERNAME:-dev}
+      - VM_PASSWORD=${VM_PASSWORD:-dev}
+      - DP_BASE_URL=${DP_BASE_URL:-http://dp-mock.local}
+      - DP_API_KEY=${DP_API_KEY:-dev-placeholder}
+      # Mongo (optional — graceful fallback per commit 4d26eef).
+      - MONGO_URI=${MONGO_URI:-mongodb://localhost:27017}
+      - DB_NAME=${DB_NAME:-dt_dev}
+    restart: unless-stopped
+
+  # =========================================================================
+  # Library agents (PDCA: library-agents-containerization)
+  # 6 stateless FastAPI services (port 8010-8015). 각 서비스는 shared/common/
+  # service_base.create_app() 를 사용해 일관된 /health, /docs, /capabilities,
+  # X-Trace-Id, INTERNAL_SERVICE_KEY 인증 패턴을 따른다.
+  # 미래 agent-orchestrator-centric 아키텍처에서 tool로 흡수 가능.
+  # =========================================================================
+
+  gcode-parser:
+    build:
+      context: .
+      dockerfile: agents/gcode-parser/Dockerfile
+    container_name: gcode-parser
+    ports:
+      - "8010:8010"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    restart: unless-stopped
+
+  cam-runner:
+    build:
+      context: .
+      dockerfile: agents/cam-runner/Dockerfile
+    container_name: cam-runner
+    ports:
+      - "8011:8011"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    restart: unless-stopped
+
+  step-pmi-reader:
+    build:
+      context: .
+      dockerfile: agents/step-pmi-reader/Dockerfile
+    container_name: step-pmi-reader
+    ports:
+      - "8012:8012"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    restart: unless-stopped
+
+  monitoring-data-replayer:
+    build:
+      context: .
+      dockerfile: agents/monitoring-data-replayer/Dockerfile
+    container_name: monitoring-data-replayer
+    ports:
+      - "8013:8013"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    restart: unless-stopped
+
+  cell-schedule-visualizer:
+    build:
+      context: .
+      dockerfile: agents/cell-schedule-visualizer/Dockerfile
+    container_name: cell-schedule-visualizer
+    ports:
+      - "8014:8014"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      # matplotlib Agg backend (headless, thread-safe)
+      - MPLBACKEND=Agg
+    restart: unless-stopped
+
+  torus-mock:
+    build:
+      context: .
+      dockerfile: agents/torus-mock/Dockerfile
+    container_name: torus-mock
+    ports:
+      - "8015:8015"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      # cell-mes 통합 테스트 시 인증 우회 (TORUS는 외부 mock — 실 운영 시 0으로)
+      - MOCK_SKIP_AUTH=${TORUS_MOCK_SKIP_AUTH:-1}
+    restart: unless-stopped
+
+  # =========================================================================
+  # Agent Orchestrator (PDCA: agent-orchestrator)
+  # LangGraph StateGraph + ReAct + dynamic tool loading via service registry.
+  # MES-centric → Orchestrator-centric 전환의 중심 서비스.
+  # 12개 internal services를 자동으로 LLM tool로 등록.
+  # LLM_PROVIDER 미설정 시 Mock provider로 graceful fallback (부팅 보장).
+  # =========================================================================
+
+  agent-orchestrator:
+    build:
+      context: .
+      dockerfile: agents/agent-orchestrator/Dockerfile
+    container_name: agent-orchestrator
+    ports:
+      - "8020:8020"
+    volumes:
+      # SqliteSaver checkpoint store (대화 상태 영속화)
+      - ./agents/agent-orchestrator/data:/app/agents/agent-orchestrator/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-MISSING-INTERNAL-SERVICE-KEY-CHECK-DOT-ENV}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      # LLM provider — anthropic | openai | ollama. 미설정 시 Mock fallback.
+      - LLM_PROVIDER=${LLM_PROVIDER:-}
+      - LLM_MODEL=${LLM_MODEL:-}
+      - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.1}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      # 서비스 레지스트리 + 체크포인트 경로
+      - SERVICE_REGISTRY_PATH=/app/config/internal-services.yaml
+      - ORCHESTRATOR_DB_PATH=/app/agents/agent-orchestrator/data/conversations.db
+      - ORCHESTRATOR_PORT=8020
+    depends_on:
+      - cell-mes
+      - cell-scheduler
+      - dtp
+      - gcode-parser
+      - cam-runner
+      - step-pmi-reader
+      - monitoring-data-replayer
+      - cell-schedule-visualizer
+      - torus-mock
+      - nl-router
+    restart: unless-stopped
+
+volumes:
+  n8n_data:
+    driver: local
+  mes_interface_db_data:
+    driver: local

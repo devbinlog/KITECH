@@ -1,0 +1,165 @@
+// DT Project integration ERD for dbdiagram.io
+// Paste this file into https://dbdiagram.io/d to render and manually rearrange.
+
+Project cell_mes_dt_project_integration {
+  database_type: "SQLite"
+  note: "MES product and routing integration with Digital Thread Platform projects, workplans, and NC files."
+}
+
+TableGroup "Existing MES Tables" {
+  products
+  process_routings
+  process_routing_files
+}
+
+TableGroup "Digital Thread Integration Tables" {
+  product_dt_project_links
+  dt_project_refs
+  dt_project_workplans
+  dt_file_refs
+}
+
+Table products {
+  id integer [pk, increment]
+  code varchar(50) [unique, not null]
+  name varchar(100) [not null]
+  unit varchar(10)
+  is_deleted boolean
+  created_at datetime
+
+  Note: "Existing product master. DT Project link is optional and stored in product_dt_project_links."
+}
+
+Table product_dt_project_links {
+  id integer [pk, increment]
+  product_id integer [not null, ref: > products.id]
+  dt_project_ref_id integer [not null, ref: > dt_project_refs.id]
+  relation_type varchar(30) [not null, default: "PRIMARY"]
+  is_current boolean [not null, default: true]
+  linked_at datetime
+  unlinked_at datetime
+
+  indexes {
+    (product_id)
+    (dt_project_ref_id)
+    (product_id, relation_type, is_current) [name: "ix_one_current_primary_link"]
+  }
+
+  Note: "Keeps current and historical links between MES products and DTP projects."
+}
+
+Table dt_project_refs {
+  id integer [pk, increment]
+  platform varchar(50) [not null, default: "DTP"]
+  external_project_id varchar(100)
+  asset_global_id varchar(255) [not null]
+  asset_id varchar(255) [not null]
+  element_id varchar(100) [not null]
+  element_full_id varchar(255)
+  element_category varchar(50) [not null, default: "Project"]
+  display_name varchar(255)
+  uuid varchar(100)
+  xml_path varchar(255)
+  raw_metadata json
+  synced_at datetime
+  created_at datetime
+
+  indexes {
+    (external_project_id)
+    (platform, asset_global_id, asset_id, element_id) [unique, name: "uq_dt_project_platform_element"]
+  }
+
+  Note: "Snapshot of a DTP DT Project selected in MES."
+}
+
+Table dt_project_workplans {
+  id integer [pk, increment]
+  dt_project_ref_id integer [not null, ref: > dt_project_refs.id]
+  workplan_id varchar(100) [not null]
+  parent_workplan_id varchar(100)
+  display_name varchar(255)
+  source_path varchar(500) [not null]
+  level integer [not null, default: 0]
+  sequence integer [not null, default: 1]
+  has_direct_steps boolean [not null, default: false]
+  raw_fragment text
+  created_at datetime
+
+  indexes {
+    (dt_project_ref_id)
+    (dt_project_ref_id, workplan_id, source_path) [unique, name: "uq_dt_project_workplan_path"]
+  }
+
+  Note: "Parsed main_workplan and nested workplan nodes from DT Project XML."
+}
+
+Table process_routings {
+  id integer [pk, increment]
+  product_id integer [not null, ref: > products.id]
+  std_process_id integer [not null]
+  sequence integer [not null]
+  revision varchar(10) [not null, default: "A"]
+  setup_id varchar(50)
+
+  // Added for DT Project integration
+  dt_workplan_id integer [ref: > dt_project_workplans.id]
+
+  required_machines json
+  remarks varchar(255)
+  created_at datetime
+
+  indexes {
+    (product_id, sequence, revision) [unique, name: "uq_routing_product_sequence_rev"]
+    (dt_workplan_id)
+  }
+
+  Note: "Existing product routing. dt_workplan_id is nullable, so non-DTP products keep the old behavior."
+}
+
+Table process_routing_files {
+  id integer [pk, increment]
+  process_routing_id integer [not null, ref: > process_routings.id]
+  file_type varchar(20) [not null, default: "NC"]
+  file_path varchar(255) [not null]
+  original_filename varchar(255)
+
+  // Added for DT Project integration
+  source_type varchar(20) [not null, default: "LOCAL_UPLOAD"]
+  dt_file_ref_id integer [ref: > dt_file_refs.id]
+
+  compatible_machines json
+  sort_order integer [not null, default: 1]
+  created_at datetime
+
+  indexes {
+    (process_routing_id)
+    (dt_file_ref_id)
+  }
+
+  Note: "Existing routing file. LOCAL_UPLOAD uses MES uploads; DTP references dt_file_refs."
+}
+
+Table dt_file_refs {
+  id integer [pk, increment]
+  platform varchar(50) [not null, default: "DTP"]
+  external_file_id varchar(100) [not null]
+  asset_global_id varchar(255) [not null]
+  asset_id varchar(255)
+  element_id varchar(100)
+  element_full_id varchar(255)
+  element_category varchar(50) [not null, default: "NC"]
+  display_name varchar(255)
+  path varchar(255) [not null]
+  references json
+  workplan_id varchar(100)
+  raw_metadata json
+  synced_at datetime
+  created_at datetime
+
+  indexes {
+    (platform, external_file_id) [unique, name: "uq_dt_file_platform_external"]
+    (workplan_id)
+  }
+
+  Note: "Snapshot of a DTP NC file reference. MES downloads content from DTP by path."
+}

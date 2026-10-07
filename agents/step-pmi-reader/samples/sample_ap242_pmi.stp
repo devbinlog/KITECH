@@ -1,0 +1,66 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('STEP AP242 PMI Sample'),'2;1');
+FILE_NAME('sample_ap242_pmi.stp','2026-02-02T08:00:00',('Author'),('Organization'),'STEP AP242','CAD System','');
+FILE_SCHEMA(('AUTOMOTIVE_DESIGN'));
+ENDSEC;
+DATA;
+/* Geometry */
+#1 = PRODUCT('Part001','Machined Block','',(#2));
+#2 = PRODUCT_CONTEXT('',#3,'mechanical');
+#3 = APPLICATION_CONTEXT('automotive design');
+#4 = SHAPE_REPRESENTATION('Part Shape',(#5,#6,#7),#8);
+#5 = AXIS2_PLACEMENT_3D('',#9,#10,#11);
+#6 = ADVANCED_BREP_SHAPE_REPRESENTATION('Block',(#12),#8);
+#7 = MANIFOLD_SOLID_BREP('Solid',#13);
+
+/* Datum Features */
+#100 = DATUM('Datum A','A');
+#101 = DATUM_FEATURE('Primary Datum',#100,#5);
+#102 = DATUM('Datum B','B');
+#103 = DATUM_FEATURE('Secondary Datum',#102,#5);
+#104 = DATUM('Datum C','C');
+#105 = DATUM_FEATURE('Tertiary Datum',#104,#5);
+#106 = DATUM_TARGET('Target 1',#100,#5);
+
+/* Geometric Tolerances (GD&T) */
+#200 = GEOMETRIC_TOLERANCE('Position Tolerance',0.05,#5);
+#201 = POSITION_TOLERANCE('Hole Position',0.025,#100,#101,#102);
+#202 = FLATNESS_TOLERANCE('Surface Flatness',0.01,#5);
+#203 = PERPENDICULARITY_TOLERANCE('Perpendicular Surface',0.02,#100);
+#204 = PARALLELISM_TOLERANCE('Parallel Faces',0.015,#101);
+#205 = CONCENTRICITY_TOLERANCE('Bore Concentricity',0.03,#100,#101);
+#206 = CYLINDRICITY_TOLERANCE('Bore Cylindricity',0.008);
+#207 = CIRCULARITY_TOLERANCE('Circle Profile',0.005);
+#208 = GEOMETRIC_TOLERANCE_WITH_DATUM_REFERENCE('Complex Tolerance',0.1,#100,#101,#102);
+#209 = SURFACE_PROFILE_TOLERANCE('Surface Profile',0.05,#100);
+#210 = RUNOUT_TOLERANCE('Circular Runout',0.02,#100);
+#211 = TOTAL_RUNOUT_TOLERANCE('Total Runout',0.03,#100);
+
+/* Dimensional Tolerances */
+#300 = DIMENSIONAL_SIZE('Length',100.0,0.1,-0.05);
+#301 = DIMENSIONAL_SIZE('Width',50.0,0.05,-0.05);
+#302 = DIMENSIONAL_SIZE('Height',25.0,0.02,-0.02);
+#303 = LINEAR_DIMENSION('Hole Distance',30.0,0.1,-0.1);
+#304 = DIAMETER_DIMENSION('Bore Diameter',10.0,0.018,0.0);
+#305 = ANGULAR_DIMENSION('Chamfer Angle',45.0,0.5,-0.5);
+#306 = RADIAL_DIMENSION('Fillet Radius',5.0,0.1,-0.1);
+#307 = PLUS_MINUS_TOLERANCE('General Tolerance',0.1);
+#308 = TOLERANCE_VALUE(0.05);
+
+/* Surface Finish */
+#400 = SURFACE_TEXTURE_PARAMETER('Ra',1.6);
+#401 = SURFACE_ROUGHNESS('Machined Surface',3.2);
+#402 = SURFACE_ROUGHNESS('Ground Surface',0.8);
+#403 = MACHINING_ALLOWANCE('Stock Removal',0.5);
+
+/* Annotations */
+#500 = ANNOTATION_OCCURRENCE('Note 1','CRITICAL DIMENSION');
+#501 = ANNOTATION_PLANE('Annotation Plane 1',#5);
+#502 = DRAUGHTING_ANNOTATION_OCCURRENCE('GD&T Callout',#200);
+#503 = DRAUGHTING_CALLOUT('Dimension Callout',#300);
+#504 = DIMENSION_CALLOUT('Hole Callout',#304);
+#505 = LEADER_CURVE('Leader 1',#5,#500);
+
+ENDSEC;
+END-ISO-10303-21;

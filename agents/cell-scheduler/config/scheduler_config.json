@@ -1,0 +1,34 @@
+{
+  "scheduler": {
+    "name": "Manufacturing Cell Scheduler",
+    "description": "Advanced scheduling for multi-machine manufacturing cells",
+    "version": "0.1.0"
+  },
+  "solver": {
+    "type": "OR-Tools CP-SAT",
+    "time_limit_sec": 60,
+    "log_search_progress": false,
+    "num_workers": 8
+  },
+  "constraints": {
+    "enforce_precedence": true,
+    "enforce_machine_compatibility": true,
+    "enforce_setup_time": true,
+    "enforce_release_dates": true,
+    "enforce_due_dates": true
+  },
+  "optimization": {
+    "objective": "minimize_makespan",
+    "secondary_objectives": [
+      "minimize_lateness",
+      "maximize_utilization",
+      "minimize_setup_changes"
+    ]
+  },
+  "output": {
+    "format": "json",
+    "include_gantt_data": true,
+    "include_quality_metrics": true,
+    "include_utilization_report": true
+  }
+}

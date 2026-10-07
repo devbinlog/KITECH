@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MES Interface DB 구현 보고서</title>
+  <style>
+    :root {
+      --ink: #16202a;
+      --muted: #5b6673;
+      --line: #d7dde5;
+      --blue: #1f5eff;
+      --green: #0f7b5f;
+      --red: #b02a37;
+      --paper: #f6f7f9;
+      --slide: #ffffff;
+      --accent: #f4b740;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      line-height: 1.45;
+    }
+
+    .deck {
+      width: min(100%, 1280px);
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    .slide {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      margin: 0 0 32px;
+      padding: 56px 64px;
+      overflow: hidden;
+      background: var(--slide);
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 36px rgba(18, 29, 43, 0.08);
+      page-break-after: always;
+    }
+
+    .slide::after {
+      content: attr(data-slide);
+      position: absolute;
+      right: 32px;
+      bottom: 24px;
+      color: #8a94a3;
+      font-size: 16px;
+    }
+
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        linear-gradient(90deg, rgba(31, 94, 255, 0.08), rgba(244, 183, 64, 0.10)),
+        #fff;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--blue);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 920px;
+      font-size: 58px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 28px;
+      font-size: 40px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 22px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 26px;
+    }
+
+    li {
+      margin: 0 0 11px;
+      color: var(--muted);
+      font-size: 21px;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #eef2f7;
+      color: #22303e;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.86em;
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px 20px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #101820;
+      color: #eef5ff;
+      font-size: 17px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 18px;
+    }
+
+    th,
+    td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      color: var(--ink);
+      font-weight: 700;
+      background: #f1f4f8;
+    }
+
+    td {
+      color: var(--muted);
+    }
+
+    .subtitle {
+      margin-top: 24px;
+      max-width: 920px;
+      font-size: 25px;
+      color: #3d4b59;
+    }
+
+    .meta {
+      position: absolute;
+      left: 64px;
+      bottom: 42px;
+      color: #606b78;
+      font-size: 18px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .box {
+      min-height: 120px;
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .box p,
+    .box li {
+      font-size: 19px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      background: #eaf0ff;
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .ok {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .warn {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 56px 1fr 56px 1fr;
+      gap: 0;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .node {
+      min-height: 150px;
+      padding: 24px;
+      border: 2px solid #cfd7e2;
+      background: #fff;
+    }
+
+    .node strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    .node span {
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .arrow {
+      text-align: center;
+      color: var(--blue);
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .callout {
+      margin-top: 24px;
+      padding: 18px 22px;
+      border-left: 6px solid var(--accent);
+      background: #fff8e8;
+      color: #4b3a14;
+      font-size: 21px;
+    }
+
+    .small {
+      font-size: 16px;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .deck {
+        width: 100%;
+        padding: 0;
+      }
+
+      .slide {
+        width: 100vw;
+        height: 56.25vw;
+        margin: 0;
+        border: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <section class="slide cover" data-slide="1 / 12">
+      <p class="eyebrow">MES to APS Interface</p>
+      <h1>MES Interface DB 구현 보고서</h1>
+      <p class="subtitle">SQLite 기반 MES 데이터를 PostgreSQL Interface DB로 복제하고, APS에는 읽기 전용 View 계약으로 제공하는 구조</p>
+      <p class="meta">작성일: 2026-09-04 · 대상: MES 개발팀, APS 연동팀, 운영 담당자</p>
+    </section>
+
+    <section class="slide" data-slide="2 / 12">
+      <h2>구현 배경</h2>
+      <div class="two-col">
+        <div>
+          <h3>회의에서 나온 요구</h3>
+          <ul>
+            <li>MES 데이터를 APS에서 읽을 수 있게 제공한다.</li>
+            <li>MES DB를 직접 열어주는 방식은 피한다.</li>
+            <li>작업지시, 라우팅, 설비, 실적, 다운타임 데이터를 우선 제공한다.</li>
+            <li>APS 결과 쓰기는 스키마가 확정된 뒤 후속 단계로 둔다.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>기술적 제약</h3>
+          <ul>
+            <li>현재 MES 원천 DB는 SQLite 파일이다.</li>
+            <li>SQLite는 외부 네트워크 접속용 서버 DB가 아니다.</li>
+            <li>MES는 계속 개발 중이라 스키마 변경 가능성이 높다.</li>
+            <li>외부 업체에는 최소 권한 계정만 제공해야 한다.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">결론: SQLite를 직접 공개하지 않고 PostgreSQL Interface DB를 별도로 둔다.</div>
+    </section>
+
+    <section class="slide" data-slide="3 / 12">
+      <h2>최종 아키텍처</h2>
+      <div class="flow">
+        <div class="node">
+          <strong>MES SQLite</strong>
+          <span><code>agents/cell-mes/data/mes.db</code><br />MES가 소유하는 원천 데이터</span>
+        </div>
+        <div class="arrow">›</div>
+        <div class="node">
+          <strong>Sync Worker</strong>
+          <span>SQLite 스냅샷 생성<br />전체 refresh 적재<br />스키마 변경 감지</span>
+        </div>
+        <div class="arrow">›</div>
+        <div class="node">
+          <strong>PostgreSQL Interface DB</strong>
+          <span><code>mes_src</code>, <code>mes_if</code>, <code>aps_if</code>, <code>if_admin</code></span>
+        </div>
+      </div>
+      <div class="callout">APS는 PostgreSQL의 <code>mes_if</code> View만 조회한다.</div>
+    </section>
+
+    <section class="slide" data-slide="4 / 12">
+      <h2>Docker Compose 구성</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>서비스</th>
+            <th>역할</th>
+            <th>주요 설정</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>mes-interface-db</code></td>
+            <td>PostgreSQL Interface DB</td>
+            <td><code>15433:5432</code>, DB <code>mes_interface</code></td>
+          </tr>
+          <tr>
+            <td><code>mes-interface-sync</code></td>
+            <td>SQLite 데이터를 PostgreSQL로 복사</td>
+            <td>MES data volume read-only mount, 매일 02:00/14:00 실행</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout"><code>mes_interface_db_data</code>는 컨테이너가 아니라 Docker volume이다. PostgreSQL 데이터 파일을 저장하며 <code>docker volume ls</code>에서 확인한다.</div>
+      <pre>docker compose up -d mes-interface-db mes-interface-sync
+docker compose run --rm mes-interface-sync sync-once</pre>
+    </section>
+
+    <section class="slide" data-slide="5 / 12">
+      <h2>Interface DB 스키마</h2>
+      <div class="three-col">
+        <div class="box">
+          <span class="tag">mes_src</span>
+          <h3>원본 미러링</h3>
+          <p>MES 테이블을 원본에 가깝게 복사한다. APS가 직접 조회하지 않는다.</p>
+        </div>
+        <div class="box">
+          <span class="tag">mes_if</span>
+          <h3>APS 조회 View</h3>
+          <p>외부 연동 계약 영역이다. APS는 이 스키마만 읽는다.</p>
+        </div>
+        <div class="box">
+          <span class="tag">if_admin</span>
+          <h3>운영 로그</h3>
+          <p>배치 성공, 실패, 스키마 스냅샷, 테이블별 row count를 기록한다.</p>
+        </div>
+      </div>
+      <div class="callout"><code>aps_if</code>는 APS 결과 쓰기 영역으로 예약했으며 1차 범위에서는 쓰기 권한을 열지 않았다.</div>
+    </section>
+
+    <section class="slide" data-slide="6 / 12">
+      <h2>동기화 방식</h2>
+      <div class="two-col">
+        <div>
+          <h3>1차 전략</h3>
+          <ul>
+            <li>하루 2회 전체 refresh를 수행한다.</li>
+            <li>운영 중 SQLite를 직접 오래 읽지 않고 backup API로 스냅샷을 만든다.</li>
+            <li>스냅샷 기준으로 PostgreSQL <code>mes_src</code>를 재적재한다.</li>
+            <li>동기화 결과는 <code>if_admin.sync_batches</code>에 남긴다.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>현재 검증 상태</h3>
+          <ul>
+            <li><span class="ok">SUCCESS</span> 최신 배치 확인</li>
+            <li>27개 MES 테이블 복사</li>
+            <li>2,747 row 적재</li>
+            <li>APS 계정으로 <code>if_work_orders</code> 조회 성공</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="7 / 12">
+      <h2>View 매핑 YAML</h2>
+      <p>핵심 APS View는 <code>agents/mes-interface-sync/config/interface_views.yaml</code>에서 관리한다.</p>
+      <pre>views:
+  - name: if_work_orders
+    source_table: work_orders
+    columns:
+      - name: qty
+        source_candidates:
+          - qty
+          - target_qty
+        required: true
+      - name: due_date
+        source_candidates:
+          - due_date
+          - delivery_date
+          - deadline_at
+        required: false</pre>
+      <div class="callout">MES 컬럼명이 바뀌면 후보 컬럼을 YAML에 추가해서 APS 컬럼명을 유지한다.</div>
+    </section>
+
+    <section class="slide" data-slide="8 / 12">
+      <h2>APS 핵심 View</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>View</th>
+            <th>용도</th>
+            <th>계약 방식</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>if_work_orders</code></td><td>작업지시, LOT, 수량, 납기</td><td>YAML 고정</td></tr>
+          <tr><td><code>if_process_routings</code></td><td>제품별 공정 순서</td><td>YAML 고정</td></tr>
+          <tr><td><code>if_std_processes</code></td><td>표준 공정 기준정보</td><td>YAML 고정</td></tr>
+          <tr><td><code>if_equipments</code></td><td>설비 기준정보와 상태</td><td>YAML 고정, 접속정보 제외</td></tr>
+          <tr><td><code>if_prod_results</code></td><td>생산 실적과 설비 점유 이력</td><td>YAML 고정</td></tr>
+          <tr><td><code>if_downtimes</code></td><td>설비 비가동 이력</td><td>YAML 고정</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide" data-slide="9 / 12">
+      <h2>접속과 보안</h2>
+      <div class="two-col">
+        <div>
+          <h3>APS 제공 정보</h3>
+          <ul>
+            <li>Host: 공장 PC 또는 서버 IP</li>
+            <li>Port: <code>15433</code></li>
+            <li>Database: <code>mes_interface</code></li>
+            <li>User: <code>aps_user</code></li>
+            <li>Schema: <code>mes_if</code></li>
+          </ul>
+        </div>
+        <div>
+          <h3>노출 제한</h3>
+          <ul>
+            <li>APS 계정은 read-only이다.</li>
+            <li><code>users</code>, <code>middleware_config</code>, <code>alembic_version</code>은 제외한다.</li>
+            <li>설비 접속 설정, 파일 경로, raw metadata는 View에서 제외한다.</li>
+            <li>비밀번호는 문서가 아니라 별도 보안 채널로 전달한다.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="10 / 12">
+      <h2>운영 확인 쿼리</h2>
+      <pre>select status, table_count, row_count, started_at, completed_at, error_message
+from if_admin.sync_batches
+order by started_at desc
+limit 3;
+
+select table_name
+from information_schema.views
+where table_schema = 'mes_if'
+order by table_name;
+
+select *
+from mes_if.if_work_orders
+order by due_date nulls last, priority desc, id
+limit 100;</pre>
+      <div class="callout">외부 APS 업체에는 <code>APS_ACCESS_GUIDE.md</code>를 기준 문서로 전달한다.</div>
+    </section>
+
+    <section class="slide" data-slide="11 / 12">
+      <h2>구현 히스토리</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>날짜</th>
+            <th>핵심 변경</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>2026-09-07</td><td>정기 동기화를 초 단위 interval에서 매일 02:00/14:00 고정 시각 방식으로 변경</td></tr>
+          <tr><td>2026-09-04</td><td>MES Interface DB, sync worker, APS read-only View, YAML 매핑 구현</td></tr>
+          <tr><td>2026-09-04</td><td>P4R processing time YAML mapping과 AAS action profile 합산 적용</td></tr>
+          <tr><td>2026-09-04</td><td>P4R machine failure status JSON rule 적용</td></tr>
+          <tr><td>2026-09-02</td><td>P4R failure rule 저장 방식과 MES 정규화 방식 설계 보정</td></tr>
+          <tr><td>2026-09-01</td><td>P4R feeder buffer, routing cycle time, action timing profile 보강</td></tr>
+          <tr><td>2026-08-06</td><td>가상장비 동기화와 MES 내부 복사 관리 구현</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide" data-slide="12 / 12">
+      <h2>후속 결정 사항</h2>
+      <div class="two-col">
+        <div>
+          <h3>운영 전 확인</h3>
+          <ul>
+            <li>APS 업체에 전달할 실제 Host IP 확정</li>
+            <li>공유기 또는 방화벽에서 외부 포트포워딩 설정</li>
+            <li>비밀번호 전달 채널 확정</li>
+            <li>파일럿 후 계정 비밀번호 회전</li>
+          </ul>
+        </div>
+        <div>
+          <h3>후속 개발</h3>
+          <ul>
+            <li>APS 결과 쓰기 스키마 확정 후 <code>aps_if</code> 개방</li>
+            <li>필요 시 source IP 제한 또는 VPN 적용</li>
+            <li>데이터량 증가 시 증분 동기화 검토</li>
+            <li>스키마 변경 알림 채널 추가</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

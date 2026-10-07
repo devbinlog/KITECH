@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: dt_agent_mongo
+    restart: always
+    ports:
+      - "28017:27017"
+    volumes:
+      - dt_mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dtp:
+    build:
+      context: ../..
+      dockerfile: agents/digital-thread-project-manager/Dockerfile
+    container_name: dtp
+    ports:
+      - "8205:8205"
+    volumes:
+      # 통합 테스트용: 샘플 파일을 컨테이너 /app/samples 에 마운트 (읽기 전용)
+      # DTP_SERVER_SAMPLES_DIR=/app/samples 환경변수와 함께 사용
+      - ../../samples:/app/samples:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CELL_DTP_PORT=8205
+      - MONGO_URL=mongodb://mongo:27017
+      - DATABASE_NAME=iso14649
+      - VM_API_URL=${VM_API_URL:-http://vm-mock.local}
+      - VM_USERNAME=${VM_USERNAME:-dev}
+      - VM_PASSWORD=${VM_PASSWORD:-dev}
+      - DP_BASE_URL=${DP_BASE_URL:-http://dp-mock.local}
+      - DP_API_KEY=${DP_API_KEY:-dev-placeholder}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  dt_mongo_data:

@@ -1,0 +1,194 @@
+{
+  "cell_layout": {
+    "cell_id": "CELL-01",
+    "cell_name": "가공셀 #1",
+
+    "feeders": [
+      {
+        "feeder_id": "FEEDER-MASS",
+        "type": "material_feeder",
+        "description": "양산품 소재 공급장치",
+        "position": {"x": -5, "y": 0},
+        "amr_access_point": {"x": -3, "y": 0},
+        "capacity": 10,
+        "current_count": 10,
+        "current_part_id": null
+      },
+      {
+        "feeder_id": "FEEDER-PALLET-A",
+        "type": "pallet_magazine",
+        "description": "팔레트 매거진 A (3축/입고측)",
+        "position": {"x": -5, "y": 4},
+        "amr_access_point": {"x": -3, "y": 4},
+        "capacity": 8,
+        "current_count": 8,
+        "current_part_id": null
+      },
+      {
+        "feeder_id": "FEEDER-PALLET-B",
+        "type": "pallet_magazine",
+        "description": "팔레트 매거진 B (4축/하드터닝)",
+        "position": {"x": -5, "y": 8},
+        "amr_access_point": {"x": -3, "y": 8},
+        "capacity": 8,
+        "current_count": 8,
+        "current_part_id": null
+      },
+      {
+        "feeder_id": "OUTFEED-MASS",
+        "type": "material_outfeed",
+        "description": "양산품 완성품 배출",
+        "position": {"x": 22, "y": 0},
+        "amr_access_point": {"x": 20, "y": 0},
+        "capacity": 30,
+        "current_count": 0
+      },
+      {
+        "feeder_id": "OUTFEED-PALLET",
+        "type": "pallet_outfeed",
+        "description": "팔레트 완성품 배출",
+        "position": {"x": 22, "y": 4},
+        "amr_access_point": {"x": 20, "y": 4},
+        "capacity": 16,
+        "current_count": 0
+      }
+    ],
+
+    "machines": [
+      {
+        "machine_id": "MCH-001",
+        "machine_type": "VMC_3AXIS_MASS",
+        "position": {"x": 0, "y": 0},
+        "amr_access_point": {"x": 0, "y": -2}
+      },
+      {
+        "machine_id": "MCH-002",
+        "machine_type": "VMC_3AXIS_MASS",
+        "position": {"x": 5, "y": 0},
+        "amr_access_point": {"x": 5, "y": -2}
+      },
+      {
+        "machine_id": "MCH-003",
+        "machine_type": "VMC_3AXIS_PALLET",
+        "position": {"x": 10, "y": 0},
+        "amr_access_point": {"x": 12, "y": 0}
+      },
+      {
+        "machine_id": "MCH-004",
+        "machine_type": "VMC_3AXIS_PALLET",
+        "position": {"x": 15, "y": 0},
+        "amr_access_point": {"x": 17, "y": 0}
+      },
+      {
+        "machine_id": "MCH-005",
+        "machine_type": "VMC_4AXIS_PALLET",
+        "position": {"x": 10, "y": 8},
+        "amr_access_point": {"x": 12, "y": 8}
+      },
+      {
+        "machine_id": "MCH-006",
+        "machine_type": "VMC_4AXIS_PALLET",
+        "position": {"x": 15, "y": 8},
+        "amr_access_point": {"x": 17, "y": 8}
+      },
+      {
+        "machine_id": "MCH-007",
+        "machine_type": "HARD_TURNING",
+        "position": {"x": 0, "y": 8},
+        "amr_access_point": {"x": 0, "y": 10}
+      },
+      {
+        "machine_id": "MCH-008",
+        "machine_type": "HARD_TURNING",
+        "position": {"x": 5, "y": 8},
+        "amr_access_point": {"x": 5, "y": 10}
+      }
+    ],
+
+    "wip_buffer": {
+      "buffer_id": "BUFFER-WIP",
+      "position": {"x": 8, "y": 4},
+      "amr_access_point": {"x": 8, "y": 4},
+      "capacity": 20,
+      "current_count": 0,
+      "description": "공정간 WIP 버퍼 (AMR간 인계용)"
+    },
+
+    "travel_times_sec": {
+      "FEEDER-MASS": {
+        "MCH-001": 42,
+        "MCH-002": 60,
+        "OUTFEED-MASS": 138
+      },
+      "FEEDER-PALLET-A": {
+        "MCH-003": 90,
+        "MCH-004": 120,
+        "BUFFER-WIP": 66
+      },
+      "FEEDER-PALLET-B": {
+        "MCH-005": 90,
+        "MCH-006": 120,
+        "MCH-007": 42,
+        "MCH-008": 60
+      },
+      "MCH-001": {
+        "MCH-002": 30,
+        "BUFFER-WIP": 72,
+        "OUTFEED-MASS": 150,
+        "FEEDER-MASS": 42
+      },
+      "MCH-002": {
+        "MCH-001": 30,
+        "BUFFER-WIP": 54,
+        "OUTFEED-MASS": 120,
+        "FEEDER-MASS": 60
+      },
+      "MCH-003": {
+        "MCH-004": 30,
+        "BUFFER-WIP": 24,
+        "OUTFEED-PALLET": 48,
+        "FEEDER-PALLET-A": 90
+      },
+      "MCH-004": {
+        "MCH-003": 30,
+        "BUFFER-WIP": 54,
+        "OUTFEED-PALLET": 18,
+        "FEEDER-PALLET-A": 120
+      },
+      "MCH-005": {
+        "MCH-006": 30,
+        "BUFFER-WIP": 24,
+        "OUTFEED-PALLET": 48,
+        "FEEDER-PALLET-B": 90
+      },
+      "MCH-006": {
+        "MCH-005": 30,
+        "BUFFER-WIP": 54,
+        "OUTFEED-PALLET": 18,
+        "FEEDER-PALLET-B": 120
+      },
+      "MCH-007": {
+        "MCH-008": 30,
+        "BUFFER-WIP": 72,
+        "OUTFEED-PALLET": 120,
+        "FEEDER-PALLET-B": 42
+      },
+      "MCH-008": {
+        "MCH-007": 30,
+        "BUFFER-WIP": 54,
+        "OUTFEED-PALLET": 90,
+        "FEEDER-PALLET-B": 60
+      },
+      "BUFFER-WIP": {
+        "MCH-001": 72,
+        "MCH-002": 54,
+        "MCH-003": 24,
+        "MCH-004": 54,
+        "MCH-005": 24,
+        "MCH-006": 54,
+        "MCH-007": 72,
+        "MCH-008": 54
+      }
+    }
+  }
+}

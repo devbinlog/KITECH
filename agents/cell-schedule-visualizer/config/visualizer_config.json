@@ -1,0 +1,42 @@
+{
+  "colors": {
+    "priority": {
+      "high": "#FF6B6B",
+      "medium": "#4ECDC4",
+      "low": "#95E1D3"
+    },
+    "utilization": {
+      "high": "#FF6B6B",
+      "medium": "#4ECDC4",
+      "low": "#95E1D3"
+    },
+    "primary": "#667eea",
+    "secondary": "#764ba2"
+  },
+  "chart": {
+    "gantt": {
+      "height_per_machine": 30,
+      "min_height": 400,
+      "template": "plotly_light"
+    },
+    "utilization": {
+      "height": 400,
+      "template": "plotly_light"
+    },
+    "lateness": {
+      "height": 350,
+      "template": "plotly_light"
+    }
+  },
+  "thresholds": {
+    "high_utilization": 15,
+    "medium_utilization": 10,
+    "lateness_threshold": 0.0
+  },
+  "dashboard": {
+    "theme": "light",
+    "responsive": true,
+    "show_metrics": true,
+    "show_footer": true
+  }
+}

@@ -1,0 +1,64 @@
+# pre-commit hooks — 양쪽 OS(Mac+Windows) 동작 가능
+#
+# 설치:
+#   uv run pre-commit install
+#   (또는: make pre-commit-install)
+#
+# 수동 실행:
+#   uv run pre-commit run --all-files
+
+repos:
+  # 빌드 산출물 / 비밀 / 큰 파일 차단
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=2048']
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-yaml
+        args: ['--allow-multiple-documents']
+      - id: check-json
+      - id: check-toml
+      - id: end-of-file-fixer
+        exclude: '^(.*\.bak|.*Conflict\..*|agents/cell-mes/data/_archive/.*)$'
+      - id: trailing-whitespace
+        exclude: '^(.*\.bak|.*Conflict\..*|.*\.md\.template)$'
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: ['--fix=no']  # .gitattributes에 위임
+
+  # Python — ruff (린트 + 포맷)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # 빌드 산출물 / 동기화 충돌 흔적 커밋 차단
+  - repo: local
+    hooks:
+      - id: forbid-build-artifacts
+        name: Forbid build artifacts in commit
+        entry: bash -c 'if git diff --cached --name-only | grep -E "(node_modules/|\.next/|__pycache__/|\.venv/|tsconfig\.tsbuildinfo|\.DS_Store|Thumbs\.db|Conflict\..*|\.bak$)"; then echo "❌ Build artifacts or sync conflict files detected — remove from staging."; exit 1; fi'
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: forbid-secrets-in-env
+        name: Forbid real secrets in committed .env files
+        entry: bash -c 'if git diff --cached --name-only | grep -E "^\.env(\.dev|\.prod)?$"; then echo "⚠️  .env files should not be committed (only .env.example)."; exit 1; fi'
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: pytest-fast
+        name: Run fast pytest (cell-mes domain + services)
+        entry: bash -c 'cd agents/cell-mes && uv run pytest tests/services tests/test_api -q --tb=short -x'
+        language: system
+        pass_filenames: false
+        # Only run when Python files change to keep pre-commit responsive.
+        types_or: [python]
+        # Always run regardless of which Python files changed (no need per-file).
+        files: '^agents/cell-mes/.*\.py$'

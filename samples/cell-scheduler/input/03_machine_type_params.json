@@ -1,0 +1,46 @@
+{
+  "machine_type_params": {
+    "VMC_3AXIS_MASS": {
+      "description": "3축 밀링 양산품",
+      "loading_type": "buffer_exchange",
+      "buffer_config": {
+        "total_slots": 6,
+        "material_slots": 3,
+        "finished_slots": 3
+      },
+      "amr_transport_qty": 3,
+      "exchange_time_sec": 45,
+      "feeder_type": "material_feeder",
+      "feeder_capacity": 10
+    },
+
+    "VMC_3AXIS_PALLET": {
+      "description": "3축 밀링 팔레트",
+      "loading_type": "pallet_single",
+      "amr_transport_qty": 1,
+      "load_unload_time_sec": 30,
+      "pallet_change_time_sec": 15,
+      "feeder_type": "pallet_magazine",
+      "feeder_capacity": 8
+    },
+
+    "VMC_4AXIS_PALLET": {
+      "description": "4축 밀링 팔레트",
+      "loading_type": "pallet_single",
+      "amr_transport_qty": 1,
+      "load_unload_time_sec": 30,
+      "pallet_change_time_sec": 20,
+      "feeder_type": "pallet_magazine",
+      "feeder_capacity": 8
+    },
+
+    "HARD_TURNING": {
+      "description": "하드 터닝",
+      "loading_type": "pallet_single",
+      "amr_transport_qty": 1,
+      "load_unload_time_sec": 45,
+      "feeder_type": "pallet_magazine",
+      "feeder_capacity": 8
+    }
+  }
+}
